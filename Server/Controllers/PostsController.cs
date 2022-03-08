@@ -16,7 +16,7 @@ namespace Server.Controllers
     {
         // GET: api/<PostsController>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAllPosts()
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Server.Controllers
 
         // GET api/<PostsController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetPostsById(int id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Server.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
-        public IActionResult Post([FromBody] Post post)
+        public IActionResult AddNewPost([FromBody] Post post)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Server.Controllers
 
         // PUT api/<PostsController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Post post)
+        public IActionResult ModifyExistingPost(int id, [FromBody] Post post)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace Server.Controllers
             }
         }
         [HttpPut("likes/{id}")]
-        public IActionResult Putlikes(int id, [FromBody] Post post)
+        public IActionResult AddLike(int id, [FromBody] Post post)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Server.Controllers
             }
         }
         [HttpPut("dislikes/{id}")]
-        public IActionResult Putdislikes(int id, [FromBody] Post post)
+        public IActionResult UnLike(int id, [FromBody] Post post)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("hearts/{id}")]
-        public IActionResult Puthearts(int id, [FromBody] Post post)
+        public IActionResult AddHeart(int id, [FromBody] Post post)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("dishearts/{id}")]
-        public IActionResult Putdishearts(int id, [FromBody] Post post)
+        public IActionResult RemoveHeart(int id, [FromBody] Post post)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace Server.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult RemovePost(int id)
         {
             try
             {
