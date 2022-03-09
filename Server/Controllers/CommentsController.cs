@@ -92,7 +92,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteComments(int id)
+        public IActionResult DeleteComment(int id)
         {
             try
             {
