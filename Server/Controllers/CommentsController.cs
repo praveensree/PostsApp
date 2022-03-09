@@ -39,9 +39,6 @@ namespace Server.Controllers
         }
 
         // DELETE api/<CommentsController>/5
-        [HttpDelete("{id}")]
-        public void DeleteCommentById(int id)
-        {
-        }
+     
     }
 }
