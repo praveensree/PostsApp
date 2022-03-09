@@ -14,7 +14,7 @@ namespace Server.Controllers
     {
         // GET: api/<CommentsController>
         [HttpGet("{id}")]
-        public IEnumerable<string> GetAllCommentsByPostId()
+        public IEnumerable<string> GetCommentsByPostId()
         {
             return new string[] { "value1", "value2" };
         }

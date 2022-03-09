@@ -14,7 +14,7 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IEnumerable<string> GetAllPosts()
+        public IEnumerable<string> GetSocialPost()
         {
             //TODO: Have to write logic here
             return new string[] { "value1", "value2" };
@@ -22,7 +22,7 @@ namespace Server.Controllers
 
         // GET api/SocialPost/5
         [HttpGet("{id}")]
-        public string GetPostById(int id)
+        public string GetSocialPostById(int id)
         {
             //TODO: Have to write logic here
             return "value";
@@ -30,26 +30,26 @@ namespace Server.Controllers
 
         // POST api/SocialPost
         [HttpPost]
-        public void CreateNewPost([FromBody] string value)
+        public void CreateSocialPost([FromBody] string value)
         {
             //TODO: Have to write logic here
         }
 
         // PUT api/SocialPost/5
         [HttpPut("{id}")]
-        public void UpdatePostById( [FromBody] string value, int id)
+        public void UpdateSocialPost( [FromBody] string value, int id)
         {
             //TODO: Have to write logic here
         }
 
         [HttpPut("Like/{id}")]
-        public void UpdateLike([FromBody] string value, int id)
+        public void UpdateSocialPostLike([FromBody] string value, int id)
         {
             //TODO: Have to write logic here
         }
 
         [HttpPut("Heart/{id}")]
-        public void UpdateHeart([FromBody] string value, int id)
+        public void UpdateSocialPostHeart([FromBody] string value, int id)
         {
             //TODO: Have to write logic here
         }
