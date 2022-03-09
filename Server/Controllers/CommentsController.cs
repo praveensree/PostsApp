@@ -15,7 +15,7 @@ namespace Server.Controllers
     public class CommentsController : ControllerBase
     {
         [HttpGet("{id}")]
-        public IActionResult GetAllComments(int id)
+        public IActionResult GetCommentsByPostId(int id)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("CommentbyId/{id}")]
-        public IActionResult GetCommentsById(int id)
+        public IActionResult GetCommentByCommentId(int id)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Server.Controllers
             }
         }
         [HttpPost]
-        public IActionResult AddComment([FromBody] Comment comment)
+        public IActionResult CreateComment([FromBody] Comment comment)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Server.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult ModifyComment(int id, [FromBody] Comment comment)
+        public IActionResult UpdateCommentById(int id, [FromBody] Comment comment)
         {
             try
             {
