@@ -55,10 +55,6 @@ namespace Server.Controllers
         }
 
         // DELETE api/SocialPost/5
-        [HttpDelete("{id}")]
-        public void DeletePostById(int id)
-        {
-            //TODO: Have to write logic here
-        }
+      
     }
 }
