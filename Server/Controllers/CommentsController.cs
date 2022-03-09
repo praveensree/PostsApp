@@ -38,7 +38,7 @@ namespace Server.Controllers
         {
         }
 
-        // DELETE api/<CommentsController>/5
+      
      
     }
 }
