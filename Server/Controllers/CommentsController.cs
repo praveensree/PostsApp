@@ -14,15 +14,15 @@ namespace Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAllComments()
+        [HttpGet("{id}")]
+        public IActionResult GetAllComments(int id)
         {
             try
             {
                 using (fbContext fb = new fbContext())
                 {
-
-                    return Ok(fb.Comments.ToList());
+                    var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
+                    return Ok(CommentList);
                 }
             }
             catch (Exception)
@@ -31,7 +31,7 @@ namespace Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("CommentbyId/{id}")]
         public IActionResult GetCommentsById(int id)
         {
             try
@@ -39,7 +39,8 @@ namespace Server.Controllers
                 using (fbContext fb = new fbContext())
                 {
 
-                    return Ok(fb.Comments.First(x => x.CommentId == id));
+                    var Comment = fb.Comments.Where(s => s.CommentId == id).First();
+                    return Ok(Comment);
                 }
             }
             catch (Exception)
