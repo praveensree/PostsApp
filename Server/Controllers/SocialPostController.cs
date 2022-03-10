@@ -18,7 +18,7 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IActionResult GetAllPost()
+        public IActionResult GetSocialPost()
         {
             //TODO: Have to write logic here
             try
