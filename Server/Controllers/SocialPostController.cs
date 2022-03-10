@@ -14,7 +14,7 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IEnumerable<string> GetSocialPost()
+        public IEnumerable<string> GetAllPost()
         {
             //TODO: Have to write logic here
             return new string[] { "value1", "value2" };
