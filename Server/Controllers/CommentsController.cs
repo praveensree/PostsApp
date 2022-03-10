@@ -91,25 +91,7 @@ namespace Server.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteComment(int id)
-        {
-            try
-            {
-                using (fbContext fb = new fbContext())
-                {
-                    var delete = fb.Comments.First(x => x.CommentId == id);
-
-                    fb.Comments.Remove(delete);
-                    fb.SaveChanges();
-                    return Ok("Deleted");
-                }
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
-        }
+       
     }
 }
 
