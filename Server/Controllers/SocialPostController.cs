@@ -8,11 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-<<<<<<< HEAD
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-=======
->>>>>>> 712773f21adaecce9956ad0a005099eccc700a2f
 namespace Server.Controllers
 {
     [Route("api/[controller]")]
@@ -80,7 +76,6 @@ namespace Server.Controllers
             }
         }
 
-        // PUT api/SocialPost/5
         [HttpPut("{id}")]
         public IActionResult UpdateSocialPost(int id, [FromBody] Post post)
         {
@@ -113,11 +108,6 @@ namespace Server.Controllers
         {
             //TODO: Have to write logic here
         }
-
-<<<<<<< HEAD
-        // DELETE api/SocialPost/5
-=======
->>>>>>> 712773f21adaecce9956ad0a005099eccc700a2f
         
     }
 }
