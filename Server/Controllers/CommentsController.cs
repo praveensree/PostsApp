@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-
 using Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 
 namespace Server.Controllers
@@ -14,6 +14,7 @@ namespace Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+
         [HttpGet("{id}")]
         public IActionResult GetCommentsByPostId(int id)
         {
@@ -89,12 +90,8 @@ namespace Server.Controllers
             {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-        }
-
-       
-    }
+            }
 }
 
-
-
+}
 

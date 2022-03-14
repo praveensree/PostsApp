@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+
 namespace Server.Controllers
 {
     [Route("api/[controller]")]
@@ -75,7 +76,7 @@ namespace Server.Controllers
             }
         }
 
-        // PUT api/SocialPost/5
+
         [HttpPut("{id}")]
         public IActionResult UpdateSocialPost(int id, [FromBody] Post post)
         {
@@ -108,7 +109,6 @@ namespace Server.Controllers
         {
             //TODO: Have to write logic here
         }
-
 
     }
 }
