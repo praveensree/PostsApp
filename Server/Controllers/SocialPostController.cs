@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Server.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Server.Controllers
 {
@@ -14,32 +17,84 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IEnumerable<string> GetAllPost()
+        public IActionResult GetSocialPost()
         {
             //TODO: Have to write logic here
-            return new string[] { "value1", "value2" };
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+
+
+                    return Ok(fb.Posts.ToList());
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // GET api/SocialPost/5
         [HttpGet("{id}")]
-        public string GetSocialPostById(int id)
+        public IActionResult GetSocialPostById(int id)
         {
-            //TODO: Have to write logic here
-            return "value";
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+
+                    return Ok(fb.Posts.First(x => x.PostId == id));
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST api/SocialPost
         [HttpPost]
-        public void CreateSocialPost([FromBody] string value)
+        public IActionResult CreateSocialPost([FromBody] Post post)
         {
-            //TODO: Have to write logic here
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    post.CreatedDate = DateTime.Now;
+                    post.UpdatedDate = null;
+                    post.Likes = 0;
+                    post.Hearts = 0;
+                    fb.Posts.Add(post);
+                    fb.SaveChanges();
+                    return Ok(post);
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // PUT api/SocialPost/5
         [HttpPut("{id}")]
-        public void UpdateSocialPost( [FromBody] string value, int id)
+        public IActionResult UpdateSocialPost(int id, [FromBody] Post post)
         {
-            //TODO: Have to write logic here
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    var update = fb.Posts.First(x => x.PostId == id);
+                    update.PostName = post.PostName;
+                    update.PostDescription = post.PostDescription;
+                    update.UpdatedDate = DateTime.Now;
+                    fb.SaveChanges();
+                    return Ok(fb.Posts.First(x => x.PostId == id));
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPut("Like/{id}")]
@@ -53,8 +108,6 @@ namespace Server.Controllers
         {
             //TODO: Have to write logic here
         }
-
-        // DELETE api/SocialPost/5
-      
+        
     }
 }
