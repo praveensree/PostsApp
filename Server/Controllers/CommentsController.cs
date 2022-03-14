@@ -69,7 +69,6 @@ namespace Server.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
         public IActionResult UpdateCommentById(int id, [FromBody] Comment comment)
         {
@@ -90,8 +89,6 @@ namespace Server.Controllers
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
-
-       
     }
 }
 
