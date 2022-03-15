@@ -98,16 +98,91 @@ namespace Server.Controllers
             }
         }
 
-        [HttpPut("Like/{id}")]
-        public void UpdateSocialPostLike([FromBody] string value, int id)
+        [HttpPut("Like/{id}/{option}")]
+        public IActionResult UpdateSocialPostLike(int id, string option)
         {
-            //TODO: Have to write logic here
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    if (option == "like")
+                    {
+
+                        var update = fb.Posts.First(x => x.PostId == id);
+                        update.Likes++;
+                        fb.SaveChanges();
+                        return Ok(update.Likes);
+                    }
+                    else if (option == "unlike")
+                    {
+                        var update = fb.Posts.First(x => x.PostId == id);
+                        if (update.Likes > 0)
+                        {
+                            update.Likes--;
+                            fb.SaveChanges();
+                            return Ok(update.Likes);
+                        }
+                        else
+                        {
+                            update.Likes=0;
+                            fb.SaveChanges();
+                            return Ok(update.Likes);
+                        }
+                    }
+                    else
+                    {
+                        return NotFound();
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
-        [HttpPut("Heart/{id}")]
-        public void UpdateSocialPostHeart([FromBody] string value, int id)
+        [HttpPut("Heart/{id}/{option}")]
+        public IActionResult UpdateSocialPostHeart(int id, string option)
         {
-            //TODO: Have to write logic here
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    if (option == "heart")
+                    {
+                        var update= fb.Posts.First(x => x.PostId == id);
+                        update.Hearts++;
+                        fb.SaveChanges();
+                        return Ok(update.Hearts);
+                    }
+                    else if (option == "disheart")
+                    {
+                        var update = fb.Posts.First(x => x.PostId == id);
+                        if (update.Hearts > 0)
+                        {
+                            update.Hearts--;
+                            fb.SaveChanges();
+                            return Ok(update.Hearts);
+                        }
+                        else
+                        {
+                            update.Hearts = 0;
+                            fb.SaveChanges();
+                            return Ok(update.Hearts);
+                        } 
+                    }
+                    else
+                        return NotFound();
+
+                }
+
+            }
+            catch (Exception)
+            {
+                return NotFound();
+
+            }
         }
 
     }
