@@ -76,6 +76,7 @@ namespace Server.Controllers
             }
         }
 
+
         [HttpPut("{id}")]
         public IActionResult UpdateSocialPost(int id, [FromBody] Post post)
         {
@@ -108,6 +109,6 @@ namespace Server.Controllers
         {
             //TODO: Have to write logic here
         }
-        
+
     }
 }

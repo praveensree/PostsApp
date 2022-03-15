@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 
 namespace Server.Controllers
 {
@@ -12,32 +14,83 @@ namespace Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        // GET: api/<CommentsController>
+
         [HttpGet("{id}")]
-        public IEnumerable<string> GetCommentsByPostId()
+        public IActionResult GetCommentsByPostId(int id)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
+                    return Ok(CommentList);
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // GET api/<CommentsController>/5
-        [HttpGet("commentId/{id}")]
-        public string GetCommentByCommentId(int id)
+        [HttpGet("CommentbyId/{id}")]
+        public IActionResult GetCommentByCommentId(int id)
         {
-            return "value";
-        }
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
 
-        // POST api/<CommentsController>
+                    var Comment = fb.Comments.Where(s => s.CommentId == id).First();
+                    return Ok(Comment);
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
         [HttpPost]
-        public void CreateComment([FromBody] string value)
+        public IActionResult CreateComment([FromBody] Comment comment)
         {
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    comment.CreatedDate = DateTime.Now;
+                    comment.UpdatedDate = null;
+
+                    fb.Comments.Add(comment);
+                    fb.SaveChanges();
+                    return Ok(comment);
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // PUT api/<CommentsController>/5
         [HttpPut("{id}")]
-        public void UpdateCommentById([FromBody] string value, int id)
+        public IActionResult UpdateCommentById(int id, [FromBody] Comment comment)
         {
-        }
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    var update = fb.Comments.First(x => x.CommentId == id);
 
-       
-    }
+                    update.CommentDetail = comment.CommentDetail;
+                    update.UpdatedDate = DateTime.Now;
+                    fb.SaveChanges();
+                    return Ok(fb.Comments.First(x => x.CommentId == id));
+                }
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            }
 }
+
+}
+
