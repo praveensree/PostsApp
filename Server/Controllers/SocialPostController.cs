@@ -17,7 +17,7 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IActionResult GetSocialPost()
+        public async Task<IActionResult> GetSocialPost()
         {
             //TODO: Have to write logic here
             try
@@ -25,8 +25,8 @@ namespace Server.Controllers
                 using (fbContext fb = new fbContext())
                 {
 
-
-                    return Ok(fb.Posts.ToList());
+                    var response = await Task.FromResult(fb.Posts.ToList());
+                    return Ok(response);
                 }
             }
             catch (Exception)
@@ -37,14 +37,14 @@ namespace Server.Controllers
 
         // GET api/SocialPost/5
         [HttpGet("{id}")]
-        public IActionResult GetSocialPostById(int id)
+        public async Task<IActionResult> GetSocialPostById(int id)
         {
             try
             {
                 using (fbContext fb = new fbContext())
                 {
-
-                    return Ok(fb.Posts.First(x => x.PostId == id));
+                    var response = await Task.FromResult(fb.Posts.First(x => x.PostId == id));
+                    return Ok(response);
                 }
             }
             catch (Exception)
@@ -55,7 +55,7 @@ namespace Server.Controllers
 
         // POST api/SocialPost
         [HttpPost]
-        public IActionResult CreateSocialPost([FromBody] Post post)
+        public async Task<IActionResult> CreateSocialPost([FromBody] Post post)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Server.Controllers
                     post.Hearts = 0;
                     fb.Posts.Add(post);
                     fb.SaveChanges();
-                    return Ok(post);
+                    return Ok(await Task.FromResult(post));
                 }
             }
             catch (Exception)
@@ -78,7 +78,7 @@ namespace Server.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateSocialPost(int id, [FromBody] Post post)
+        public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Server.Controllers
                     update.PostDescription = post.PostDescription;
                     update.UpdatedDate = DateTime.Now;
                     fb.SaveChanges();
-                    return Ok(fb.Posts.First(x => x.PostId == id));
+                    return Ok(await Task.FromResult(fb.Posts.First(x => x.PostId == id)));
                 }
             }
             catch (Exception)
@@ -98,16 +98,74 @@ namespace Server.Controllers
             }
         }
 
-        [HttpPut("Like/{id}")]
-        public void UpdateSocialPostLike([FromBody] string value, int id)
+        [HttpPut("LikesandHearts/{id}/{option}")]
+        public async Task<IActionResult> UpdateSocialPostLike(int id, string option)
         {
-            //TODO: Have to write logic here
-        }
+            try
+            {
+                using (fbContext fb = new fbContext())
+                {
+                    var update = fb.Posts.First(x => x.PostId == id);
+                    if (option == "like"|| option == "heart")
+                    {
+                        if (option == "like")
+                        {
+                            update.Likes++;
+                            fb.SaveChanges();
+                            return Ok(await Task.FromResult(update.Likes));
+                        }
+                        else
+                        {
+                            update.Hearts++;
+                            fb.SaveChanges();
+                            return Ok(await Task.FromResult(update.Hearts));
+                        }
+                    }
+                    else if (option == "unlike"|| option == "disheart")
+                    {
+                        if (option == "unlike")
+                        {
+                            if (update.Likes > 0)
+                            {
+                                update.Likes--;
+                                fb.SaveChanges();
+                                return Ok(await Task.FromResult(update.Likes));
+                            }
+                            else
+                            {
+                                update.Likes = 0;
+                                fb.SaveChanges();
+                                return Ok(await Task.FromResult(update.Likes));
+                            }
+                        }
+                        else
+                        {
+                            if (update.Hearts > 0)
+                            {
+                                update.Hearts--;
+                                fb.SaveChanges();
+                                return Ok(await Task.FromResult(update.Hearts));
+                            }
+                            else
+                            {
+                                update.Hearts = 0;
+                                fb.SaveChanges();
+                                return Ok(await Task.FromResult(update.Hearts));
+                            }
+                        }
+                       
+                    }
+                    else
+                    {
+                        return NotFound();
 
-        [HttpPut("Heart/{id}")]
-        public void UpdateSocialPostHeart([FromBody] string value, int id)
-        {
-            //TODO: Have to write logic here
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
     }
