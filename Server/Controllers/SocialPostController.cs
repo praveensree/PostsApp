@@ -17,7 +17,7 @@ namespace Server.Controllers
     {
         // GET: api/SocialPost
         [HttpGet]
-        public IActionResult GetSocialPost()
+        public  IActionResult GetSocialPost()
         {
             //TODO: Have to write logic here
             try
@@ -98,24 +98,25 @@ namespace Server.Controllers
             }
         }
 
-        [HttpPut("Like/{id}/{option}")]
+        [HttpPut("LikesandHearts/{id}/{option}")]
         public IActionResult UpdateSocialPostLike(int id, string option)
         {
             try
             {
                 using (fbContext fb = new fbContext())
                 {
+                    var update = fb.Posts.First(x => x.PostId == id);
                     if (option == "like")
                     {
 
-                        var update = fb.Posts.First(x => x.PostId == id);
+                        
                         update.Likes++;
                         fb.SaveChanges();
                         return Ok(update.Likes);
                     }
                     else if (option == "unlike")
                     {
-                        var update = fb.Posts.First(x => x.PostId == id);
+                        
                         if (update.Likes > 0)
                         {
                             update.Likes--;
@@ -128,37 +129,16 @@ namespace Server.Controllers
                             fb.SaveChanges();
                             return Ok(update.Likes);
                         }
+                       
                     }
-                    else
+                    else if (option == "heart")
                     {
-                        return NotFound();
-
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpPut("Heart/{id}/{option}")]
-        public IActionResult UpdateSocialPostHeart(int id, string option)
-        {
-            try
-            {
-                using (fbContext fb = new fbContext())
-                {
-                    if (option == "heart")
-                    {
-                        var update= fb.Posts.First(x => x.PostId == id);
                         update.Hearts++;
                         fb.SaveChanges();
                         return Ok(update.Hearts);
                     }
-                    else if (option == "disheart")
+                    else if(option == "disheart")
                     {
-                        var update = fb.Posts.First(x => x.PostId == id);
                         if (update.Hearts > 0)
                         {
                             update.Hearts--;
@@ -170,18 +150,18 @@ namespace Server.Controllers
                             update.Hearts = 0;
                             fb.SaveChanges();
                             return Ok(update.Hearts);
-                        } 
+                        }
                     }
                     else
+                    {
                         return NotFound();
 
+                    }
                 }
-
             }
             catch (Exception)
             {
                 return NotFound();
-
             }
         }
 
