@@ -16,14 +16,14 @@ namespace Server.Controllers
     {
 
         [HttpGet("{id}")]
-        public IActionResult GetCommentsByPostId(int id)
+        public async Task<IActionResult> GetCommentsByPostId(int id)
         {
             try
             {
                 using (fbContext fb = new fbContext())
                 {
                     var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
-                    return Ok(CommentList);
+                    return Ok(await Task.FromResult(CommentList));
                 }
             }
             catch (Exception)
@@ -33,7 +33,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("CommentbyId/{id}")]
-        public IActionResult GetCommentByCommentId(int id)
+        public async Task<IActionResult> GetCommentByCommentId(int id)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Server.Controllers
                 {
 
                     var Comment = fb.Comments.Where(s => s.CommentId == id).First();
-                    return Ok(Comment);
+                    return Ok(await Task.FromResult(Comment));
                 }
             }
             catch (Exception)
@@ -50,7 +50,7 @@ namespace Server.Controllers
             }
         }
         [HttpPost]
-        public IActionResult CreateComment([FromBody] Comment comment)
+        public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Server.Controllers
 
                     fb.Comments.Add(comment);
                     fb.SaveChanges();
-                    return Ok(comment);
+                    return Ok(await Task.FromResult(comment));
                 }
             }
             catch (Exception)
@@ -71,7 +71,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCommentById(int id, [FromBody] Comment comment)
+        public async Task<IActionResult> UpdateCommentById(int id, [FromBody] Comment comment)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Server.Controllers
                     update.CommentDetail = comment.CommentDetail;
                     update.UpdatedDate = DateTime.Now;
                     fb.SaveChanges();
-                    return Ok(fb.Comments.First(x => x.CommentId == id));
+                    return Ok(await Task.FromResult(fb.Comments.First(x => x.CommentId == id)));
                 }
             }
             catch (Exception)
