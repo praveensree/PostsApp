@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-
+using Server.Repository;
 
 namespace Server.Controllers
 {
@@ -14,17 +13,19 @@ namespace Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+        private readonly ICommentRepository _commentRepository;
+        public CommentsController(ICommentRepository commentRepository)
+        {
+            _commentRepository = commentRepository;
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCommentsByPostId(int id)
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
-                    return Ok(await Task.FromResult(CommentList));
-                }
+                var response = await Task.FromResult(_commentRepository.GetCommentsByPostId(id));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -37,12 +38,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-
-                    var Comment = fb.Comments.Where(s => s.CommentId == id).First();
-                    return Ok(await Task.FromResult(Comment));
-                }
+                var response = await Task.FromResult(_commentRepository.GetCommentByCommentId(id));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -54,15 +51,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    comment.CreatedDate = DateTime.Now;
-                    comment.UpdatedDate = null;
-
-                    fb.Comments.Add(comment);
-                    fb.SaveChanges();
-                    return Ok(await Task.FromResult(comment));
-                }
+                var response = await Task.FromResult(_commentRepository.CreateComment(comment));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -75,15 +65,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var update = fb.Comments.First(x => x.CommentId == id);
-
-                    update.CommentDetail = comment.CommentDetail;
-                    update.UpdatedDate = DateTime.Now;
-                    fb.SaveChanges();
-                    return Ok(await Task.FromResult(fb.Comments.First(x => x.CommentId == id)));
-                }
+                var response = await Task.FromResult(_commentRepository.UpdateCommentById(id, comment));
+                return Ok(response);
             }
             catch (Exception)
             {
