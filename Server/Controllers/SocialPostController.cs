@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using Server.Repository;
 
 namespace Server.Controllers
 {
@@ -15,6 +15,11 @@ namespace Server.Controllers
     [ApiController]
     public class SocialPostController : ControllerBase
     {
+        private readonly IPostRepository _postRepository;
+        public SocialPostController(IPostRepository postRepository)
+        {
+            _postRepository = postRepository;
+        }
         // GET: api/SocialPost
         [HttpGet]
         public async Task<IActionResult> GetSocialPost()
@@ -22,12 +27,8 @@ namespace Server.Controllers
             //TODO: Have to write logic here
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-
-                    var response = await Task.FromResult(fb.Posts.ToList());
-                    return Ok(response);
-                }
+                var response = await Task.FromResult(_postRepository.GetSocialPost());
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -41,11 +42,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var response = await Task.FromResult(fb.Posts.First(x => x.PostId == id));
-                    return Ok(response);
-                }
+                var response = await Task.FromResult(_postRepository.GetSocialPostById(id));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -59,16 +57,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    post.CreatedDate = DateTime.Now;
-                    post.UpdatedDate = null;
-                    post.Likes = 0;
-                    post.Hearts = 0;
-                    fb.Posts.Add(post);
-                    fb.SaveChanges();
-                    return Ok(await Task.FromResult(post));
-                }
+                var response = await Task.FromResult(_postRepository.CreateSocialPost(post));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -82,15 +72,8 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var update = fb.Posts.First(x => x.PostId == id);
-                    update.PostName = post.PostName;
-                    update.PostDescription = post.PostDescription;
-                    update.UpdatedDate = DateTime.Now;
-                    fb.SaveChanges();
-                    return Ok(await Task.FromResult(fb.Posts.First(x => x.PostId == id)));
-                }
+                var response = await Task.FromResult(_postRepository.UpdateSocialPost(id, post));
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -103,63 +86,15 @@ namespace Server.Controllers
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var update = fb.Posts.First(x => x.PostId == id);
-                    if (option == "like"|| option == "heart")
-                    {
-                        if (option == "like")
-                        {
-                            update.Likes++;
-                            fb.SaveChanges();
-                            return Ok(await Task.FromResult(update.Likes));
-                        }
-                        else
-                        {
-                            update.Hearts++;
-                            fb.SaveChanges();
-                            return Ok(await Task.FromResult(update.Hearts));
-                        }
-                    }
-                    else if (option == "unlike"|| option == "disheart")
-                    {
-                        if (option == "unlike")
-                        {
-                            if (update.Likes > 0)
-                            {
-                                update.Likes--;
-                                fb.SaveChanges();
-                                return Ok(await Task.FromResult(update.Likes));
-                            }
-                            else
-                            {
-                                update.Likes = 0;
-                                fb.SaveChanges();
-                                return Ok(await Task.FromResult(update.Likes));
-                            }
-                        }
-                        else
-                        {
-                            if (update.Hearts > 0)
-                            {
-                                update.Hearts--;
-                                fb.SaveChanges();
-                                return Ok(await Task.FromResult(update.Hearts));
-                            }
-                            else
-                            {
-                                update.Hearts = 0;
-                                fb.SaveChanges();
-                                return Ok(await Task.FromResult(update.Hearts));
-                            }
-                        }
-                       
-                    }
-                    else
-                    {
-                        return NotFound();
 
-                    }
+                var response = await Task.FromResult(_postRepository.UpdateSocialPostLike(id, option));
+                if (response >= 0)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
                 }
             }
             catch (Exception)
