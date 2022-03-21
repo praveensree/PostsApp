@@ -2,3 +2,5 @@ Server/[bB]in
 Server/.vs
 Server/[oO]bj
 Clients/node_modules
+PostAppTest/[bB]in
+PostAppTest/[oO]bj
