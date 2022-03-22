@@ -12,8 +12,6 @@ export class Posts extends Component {
             },
             likes: 0,
             List: [],
-            LikeButton: "👍",
-            HeartButton: "Heart"
         };
         this.viewComments = this.viewComments.bind(this);
         this.AddPost = this.AddPost.bind(this);
@@ -68,27 +66,33 @@ export class Posts extends Component {
     commentHandle = (e) => {
         this.setState({ commentDetail: e.target.value });
     }
-    changeLike = () => {
-        if (this.state.LikeButton === "👍")
-            this.setState({ LikeButton: "👎" });
+   
+    setLikes = (id,symbol) => {
+        if (symbol === "👍") {
+            axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/like/'+id)
+            .then(res => {
+                this.getPost();
+            })
+        }
         else {
-            this.setState({ LikeButton: "👍" });
+            axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/unlike/'+id)
+            .then(res => {
+                this.getPost();
+            })
         }
     }
-    setLikes = (num) => {
-        if (num === 0) {
-
+    setHearts = (id,symbol) => {
+        if (symbol === "❤️") {
+            axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/heart/'+id)
+            .then(res => {
+                this.getPost();
+            })
         }
         else {
-
-        }
-    }
-    setHearts = (num) => {
-        if (num === 0) {
-
-        }
-        else {
-
+            axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/disheart/'+id)
+            .then(res => {
+                this.getPost();
+            })
         }
     }
     render() {
@@ -113,7 +117,7 @@ export class Posts extends Component {
                                     <h4>{list.postName}</h4>
                                     <p>{list.postDescription}</p>
                                     <span>
-                                        <button className="button-7" onClick={() => { this.setLike(list.postId) }}>{list.likes === 0 ? "👍" : "👎"}</button>Likes|: {list.likes}
+                                        <button className="button-7" onClick={(e) => { this.setLikes(list.postId,e.target.innerText) }}>{list.likes === 0 ? "👍" : "👎"}</button>Likes|: {list.likes}
                                     </span>
                                     <span>
                                         <button className="button-7" onClick={this.setHearts(list.postId)}>{list.hearts === 0 ? "❤️" : "💔"}</button>Hearts|: {list.hearts}

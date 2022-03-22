@@ -29,6 +29,9 @@ export class Comments extends Component {
         }, []);
     }
   
+    viewComment(id){
+        this.props.history.push(`/ViewComment/${id}`);
+    }
 
     componentDidMount(){
         this.getPostbyId(this.state.postId);
@@ -46,10 +49,15 @@ export class Comments extends Component {
               { 
                   this.state.List.map(list=>
                       <ul key={list.commentId}>   
-                          <li>{list.commentDetail}</li>
+                          <li>{list.commentDetail}
+                          <button className="button-7" onClick={ () => this.viewComment(list.commentId)}>edit</button>
+                          </li>
+                          
                       </ul>
                   )}
           </div>
+          <button className="button-25" onClick={ () => this.props.history.push('/')}>back</button>
+
       </div>
     )
   }
