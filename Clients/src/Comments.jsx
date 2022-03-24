@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
+
 import axios from 'axios';
-var list={}
+let list={}
 export class Comments extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            postId: this.props.match.params.postId,
+            postId: this.props.postId,
            post:[],
             List: []
         }
         
     }
-    getPostbyId = (postId) => {
-        axios.get("http://localhost:60438/api/SocialPost/"+postId).then((response) => {
-
-            this.setState({ post: response.data });
-            
-        }, []);
-    }
+ 
 
     getComments = (postId) => {
         axios.get("http://localhost:60438/api/Comments/"+postId).then((response) => {
@@ -34,7 +29,7 @@ export class Comments extends Component {
     }
 
     componentDidMount(){
-        this.getPostbyId(this.state.postId);
+     
         this.getComments(this.state.postId);
         
     }
@@ -43,8 +38,7 @@ export class Comments extends Component {
   render() {
     return (
       <div>
-        <h4>{this.state.post.postName}</h4>
-          <h4>{this.state.post.postDescription}</h4>
+        
           <div>
               { 
                   this.state.List.map(list=>
@@ -56,8 +50,6 @@ export class Comments extends Component {
                       </ul>
                   )}
           </div>
-          <button className="button-25" onClick={ () => this.props.history.push('/')}>back</button>
-
       </div>
     )
   }

@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-
+import Comments from './Comments'
 export class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
             postName: '',
             postDescription: '',
-            commentDetail: {
-                message:""
-            },
+            
             likes: 0,
             List: [],
+            cId:null,
+            CDetail:''
         };
         this.viewComments = this.viewComments.bind(this);
         this.AddPost = this.AddPost.bind(this);
@@ -43,15 +43,12 @@ export class Posts extends Component {
                 this.getPost();
             })
     }
-    handleFieldChange = event => {
-        const { value, message } = event.target;
+    handleFieldChange = (event,id) => {
+        const {value, message} = event.target;
     
         this.setState({
-          ...this.state,
-          commentDetail: {
-            ...this.state.commentDetail,
-            [message]: value
-          }
+          cId:id,
+          CDetail:value
         });
       };
     viewComments(postId) {
@@ -120,15 +117,16 @@ export class Posts extends Component {
                                         <button className="button-7" onClick={(e) => { this.setLikes(list.postId,e.target.innerText) }}>{list.likes === 0 ? "👍" : "👎"}</button>Likes|: {list.likes}
                                     </span>
                                     <span>
-                                        <button className="button-7" onClick={this.setHearts(list.postId)}>{list.hearts === 0 ? "❤️" : "💔"}</button>Hearts|: {list.hearts}
+                                        <button className="button-7" onClick={(e) => {this.setHearts(list.postId,e.target.innerText)}}>{list.hearts === 0 ? "❤️" : "💔"}</button>Hearts|: {list.hearts}
                                     </span>
-                                    <span>
+                                    {/* <span>
                                     <button className="button-7" onClick={() => this.viewComments(list.postId)}>View comments</button>
-                                    </span>
+                                    </span> */}
                                     <div>
                                     <span>
-                                    <input type="text" name="comment" required className="search-boxss"  onChange={this.handleFieldChange } value={this.state.commentDetail.message} placeholder="write your comments" />
-                                        <button className="button-7" onClick={() => this.viewComments(list.postId)}>+ Comment</button>
+                                        <Comments postId={list.postId}></Comments>
+                                    <input type="text" name="comment" required className="search-boxss"  onChange={(e)=>e.target.value }  placeholder="write your comments" />
+                                        <button className="button-7" >+ Comment</button>
                                     </span>
                                     </div>
                                 </li>
