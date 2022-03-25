@@ -1,120 +1,98 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Moq;
+using PostAppTest.Utilities;
 using Server.Controllers;
 using Server.Models;
-using Server.Repository;
+using Server.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace PostAppTest
 {
-    public class CommentTest
+    [CollectionDefinition("TestData collection")]
+    public class CommentTest :  IClassFixture<TextFixture>
     {
-        [Fact]
-        public void GetCommentsByPostId_Returns_All_Comments()
-        {
+        TextFixture testFixture;
 
-            var id = 1;
+        public CommentTest(TextFixture fixture)
+        {
+            this.testFixture = fixture;
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task GetCommentsByPostId_Returns_All_CommentsAsync()
+        {
             // Arrange
-            var mockRepo = new Mock<ICommentRepository>();
+            var mockRepo = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.GetCommentsByPostId( id))
-            .Returns(GetTestComments());
+            mockRepo.Setup(repo => repo.GetCommentsByPostId(1))
+            .Returns(testFixture.GetTestComments());
 
             var controller = new CommentsController(mockRepo.Object);
 
-            var result = controller.GetCommentsByPostId(1);
+            var result = await controller.GetCommentsByPostId(1) as OkObjectResult;
 
-            Assert.NotNull(result);
+            var actualResponse = result.Value as List<Comment>;
+
+            Assert.Single(actualResponse);
         }
 
         [Fact]
-        public void GetCommentsByCommentId_Returns_Comment()
+        public async System.Threading.Tasks.Task GetCommentsByCommentId_Returns_CommentAsync()
         {
-
-            var id = 1;
             // Arrange
-            var mockRepo = new Mock<ICommentRepository>();
+            var mockRepo = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.GetCommentByCommentId(id))
-            .Returns(GetTestCommentById());
+            mockRepo.Setup(repo => repo.GetCommentByCommentId(1))
+            .Returns(testFixture.GetTestCommentById());
 
             var controller = new CommentsController(mockRepo.Object);
 
-            var result = controller.GetCommentByCommentId(2);
+            var result = await controller.GetCommentByCommentId(1) as OkObjectResult;
 
-            Assert.NotNull(result);
+            var actualResponse = result.Value as Comment;
+
+            Assert.NotNull(actualResponse);
         }
 
         [Fact]
 
-        public void CreateComment_Returns_Comment()
+        public async Task CreateComment_Returns_CommentAsync()
         {
-
-
             // Arrange
-            var mockRepo = new Mock<ICommentRepository>();
+            var mockRepo = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.CreateComment(GetTestCommentById()))
-            .Returns(GetTestCommentById());
+            mockRepo.Setup(repo => repo.CreateComment(testFixture.CreateCommentforId()))
+            .Returns(testFixture.CreatedCommentforId());
 
             var controller = new CommentsController(mockRepo.Object);
 
-            var result = controller.CreateComment(GetTestCommentById());
+            var result = await controller.CreateComment(testFixture.CreateCommentforId()) as OkObjectResult;
 
-            Assert.NotNull(result);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+        
         }
 
         [Fact]
-        public void UpdateSocialPost_Returns_Post()
+        public async System.Threading.Tasks.Task UpdateSocialPost_Returns_PostAsync()
         {
-            var id = 1;
+           
+            var mockRepo = new Mock<ICommentService>();
 
-
-            var mockRepo = new Mock<ICommentRepository>();
-
-            mockRepo.Setup(repo => repo.UpdateCommentById(id, GetTestCommentById()))
-            .Returns(GetTestCommentById());
+            mockRepo.Setup(repo => repo.UpdateCommentById(2, testFixture.GetTestCommentForId()))
+            .Returns(testFixture.GetTestCommentById());
 
             var controller = new CommentsController(mockRepo.Object);
 
-            var result = controller.UpdateCommentById(id, GetTestCommentById());
+            var result = await controller.UpdateCommentById(2, testFixture.GetTestCommentForId()) as OkObjectResult;
 
-            Assert.NotNull(result);
-        }
-        public Comment GetTestCommentById()
-        {
-            var res = new Comment()
-            {
-                PostId = 1,
-                CommentId = 2,
-                CreatedDate = null,
-                UpdatedDate = null,
-                CommentDetail = "nice one"
-
-            };
-
-
-
-            return res;
+            
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+     
         }
 
-        public List<Comment> GetTestComments()
-        {
-            List<Comment> comment = new List<Comment>();
-            var res = new Comment()
-            {
-                PostId = 1,
-                CommentId =2,
-                CreatedDate = null,
-                UpdatedDate = null,
-                CommentDetail="nice one"
-            };
-
-            comment.Add(res);
-
-            return comment;
-
-        }
     }
 }

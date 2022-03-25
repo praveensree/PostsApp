@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Server.Repository;
+using Server.Services;
 
 namespace Server.Controllers
 {
@@ -15,10 +16,10 @@ namespace Server.Controllers
     [ApiController]
     public class SocialPostController : ControllerBase
     {
-        private readonly IPostRepository _postRepository;
-        public SocialPostController(IPostRepository postRepository)
+        private readonly IPostService _postService;
+        public SocialPostController( IPostService postService)
         {
-            _postRepository = postRepository;
+            _postService = postService;
         }
         // GET: api/SocialPost
         [HttpGet]
@@ -27,7 +28,7 @@ namespace Server.Controllers
             //TODO: Have to write logic here
             try
             {
-                var response = await Task.FromResult(_postRepository.GetSocialPost());
+                var response = await _postService.GetSocialPost();
                 return Ok(response);
             }
             catch (Exception)
@@ -42,7 +43,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_postRepository.GetSocialPostById(id));
+                var response = await _postService.GetSocialPostById(id);
                 return Ok(response);
             }
             catch (Exception)
@@ -57,7 +58,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_postRepository.CreateSocialPost(post));
+                var response = await _postService.CreateSocialPost(post);
                 return Ok(response);
             }
             catch (Exception)
@@ -72,7 +73,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_postRepository.UpdateSocialPost(id, post));
+                var response = await _postService.UpdateSocialPost(id, post);
                 return Ok(response);
             }
             catch (Exception)
@@ -82,12 +83,12 @@ namespace Server.Controllers
         }
 
         [HttpPut("LikesandHearts/{id}/{option}")]
-        public async Task<IActionResult> UpdateSocialPostLike(int id, string option)
+        public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
             try
             {
 
-                var response = await Task.FromResult(_postRepository.UpdateSocialPostLike(id, option));
+                var response = await _postService.UpdateSocialPostLikeHeart(id, option);
                 if (response >= 0)
                 {
                     return Ok(response);

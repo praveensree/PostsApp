@@ -1,148 +1,107 @@
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using PostAppTest.Utilities;
 using Server.Controllers;
 using Server.Models;
-using Server.Repository;
+using Server.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SocialPostsTest
 {
-    public class SocialPostControllerTest
+    [CollectionDefinition("TestData collection")]
+    public class SocialPostControllerTest :  IClassFixture<TextFixture>
     {
+        TextFixture testFixture;
+
+        public SocialPostControllerTest(TextFixture fixture)
+        {
+            this.testFixture = fixture;
+        }
 
         [Fact]
-        public void GetAllSocialPost_Returns_All_posts()
+        public async Task GetAllSocialPost_Returns_All_postsAsync()
         {
             // Arrange
-            var mockRepo = new Mock<IPostRepository>();
+            var mockRepo = new Mock<IPostService>();
 
             mockRepo.Setup(repo => repo.GetSocialPost())
-            .Returns(GetTestPost());
+            .Returns(testFixture.GetTestPost());
 
             var controller = new SocialPostController(mockRepo.Object);
 
-            var result = controller.GetSocialPost();
+            var result =  await controller.GetSocialPost() as OkObjectResult;
 
-            Assert.NotNull(result);
+            var actualResponse = result.Value as List<Post>;
+
+            Assert.True(actualResponse.Count > 0);
         }
 
         [Fact]
-        public void GetSocialPostById_Returns_Post()
+        public async Task GetSocialPostById_Returns_PostAsync()
         {
-            var id = 1;
+            var mockRepo = new Mock<IPostService>();
 
+            mockRepo.Setup(repo => repo.GetSocialPostById(1))
+            .Returns(testFixture.GetTestPostById());
+
+            var controller = new SocialPostController(mockRepo.Object);
+
+            var result = await controller.GetSocialPostById(1) as OkObjectResult;
+
+            var actualResponse = result.Value as Post;
+
+            Assert.NotNull(actualResponse);
+        }
+
+        [Fact]
+        public async Task UpdateSocialPost_Returns_PostAsync()
+        {
+                
+            var mockRepo = new Mock<IPostService>();
+
+            mockRepo.Setup(repo => repo.UpdateSocialPost(1, testFixture.GetTestPostForId()))
+            .Returns(testFixture.GetTestPostById());
+
+            var controller = new SocialPostController(mockRepo.Object);
+
+            var result = await controller.UpdateSocialPost(1, testFixture.GetTestPostForId()) as OkObjectResult;
+
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateSocialPostLike_returns_intAsync()
+        {
            
-            var mockRepo = new Mock<IPostRepository>();
-
-            mockRepo.Setup(repo => repo.GetSocialPostById(id))
-            .Returns(GetTestPostById());
-
-            var controller = new SocialPostController(mockRepo.Object);
-
-            var result = controller.GetSocialPostById(1);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void UpdateSocialPost_Returns_Post()
-        {
-            var id = 1;
-
-           
-            var mockRepo = new Mock<IPostRepository>();
-
-            mockRepo.Setup(repo => repo.UpdateSocialPost(id, GetTestPostById()))
-            .Returns(GetTestPostById());
+            var mockRepo = new Mock<IPostService>();
+            mockRepo.Setup(repo => repo.UpdateSocialPostLikeHeart(1, "like"))
+            .Returns(Task.FromResult(2));
 
             var controller = new SocialPostController(mockRepo.Object);
 
-            var result = controller.UpdateSocialPost(id, GetTestPostById());
+            var result = await controller.UpdateSocialPostLikeHeart(1, "like") as OkObjectResult;
 
-            Assert.NotNull(result);
+            Assert.Equal(2, result.Value);
         }
 
         [Fact]
-        public void UpdateSocialPostLike_returns_int()
+        public async Task CreateSocialPost_Returns_PostAsync()
         {
-            var id = 1;
-            var option = "like";
-            var mockRepo = new Mock<IPostRepository>();
-            mockRepo.Setup(repo => repo.UpdateSocialPostLike(id, option))
-            .Returns(LikesorHearts(id));
-            var controller = new SocialPostController(mockRepo.Object);
-
-            var result = controller.UpdateSocialPostLike(id, option);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void CreateSocialPost_Returns_Post()
-        {
-
-
             // Arrange
-            var mockRepo = new Mock<IPostRepository>();
+            var mockRepo = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.CreateSocialPost(GetTestPostById()))
-            .Returns(GetTestPostById());
+            mockRepo.Setup(repo => repo.CreateSocialPost(testFixture.GetTestPostForId()))
+            .Returns(testFixture.GetTestPostById());
 
             var controller = new SocialPostController(mockRepo.Object);
 
-            var result = controller.CreateSocialPost(GetTestPostById());
+            var result = await controller.CreateSocialPost(testFixture.GetTestPostForId()) as OkObjectResult;
 
-            Assert.NotNull(result);
-        }
-
-      
-
-        public int LikesorHearts(int id)
-        {
-            var res = id;
-            return res++;
-        }
-      
-        public Post GetTestPostById()
-        {
-            
-            var res = new Post()
-            {
-                PostId = 1,
-                PostName = "Whales",
-                PostDescription = "Biggest fish",
-                CreatedDate = null,
-                UpdatedDate = null,
-                Likes = 0,
-                Hearts = 0
-            };
-
-            
-
-            return res;
-
-        }
-
-
-        public List<Post> GetTestPost()
-        {
-            List<Post> post = new List<Post>();
-            var res = new Post()
-            {
-                PostId = 1,
-                PostName = "Whales",
-                PostDescription = "Biggest fish",
-                CreatedDate = null,
-                UpdatedDate = null,
-                Likes = 0,
-                Hearts = 0
-            };
-
-            post.Add(res);
-
-            return post;
-
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
         }
     }
 }

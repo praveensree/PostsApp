@@ -8,7 +8,7 @@ namespace Server.Repository
 {
     public class PostRepository : IPostRepository
     {
-        public Post CreateSocialPost(Post post)
+        public Post Insert(Post post)
         {
             using (fbContext fb = new fbContext())
             {
@@ -30,7 +30,7 @@ namespace Server.Repository
             }
         }
 
-        public List<Post> GetSocialPost()
+        public List<Post> GetAll()
         {
             using (fbContext fb = new fbContext())
             {
@@ -38,7 +38,7 @@ namespace Server.Repository
             }
         }
 
-        public Post GetSocialPostById(int id)
+        public Post GetById(int id)
         {
             using (fbContext fb = new fbContext())
             {
@@ -56,7 +56,7 @@ namespace Server.Repository
             }
         }
 
-        public Post UpdateSocialPost(int id, Post post)
+        public Post Update(int id, Post post)
         {
             using (fbContext fb = new fbContext())
             {
@@ -76,7 +76,7 @@ namespace Server.Repository
             }
         }
 
-        public int UpdateSocialPostLike(int id, string option)
+        public int UpdateLikeHeart(int id, string option)
         {
             using (fbContext fb = new fbContext())
             {

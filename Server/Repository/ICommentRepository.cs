@@ -8,10 +8,10 @@ namespace Server.Repository
 {
    public interface ICommentRepository
     {
-        List<Comment> GetCommentsByPostId(int id);
-        Comment GetCommentByCommentId(int id);
+        List<Comment> GetByPostId(int id);
+        Comment GetByCommentId(int id);
 
-        Comment CreateComment(Comment comment);
-        Comment UpdateCommentById(int id, Comment comment);
+        Comment Insert(Comment comment);
+        Comment Update(int id, Comment comment);
     }
 }
