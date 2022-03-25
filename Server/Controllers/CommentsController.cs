@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Server.Repository;
+using Server.Services;
 
 namespace Server.Controllers
 {
@@ -13,10 +14,10 @@ namespace Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepository;
-        public CommentsController(ICommentRepository commentRepository)
+        private readonly ICommentService _commentService;
+        public CommentsController(ICommentService commentService)
         {
-            _commentRepository = commentRepository;
+            _commentService = commentService;
         }
 
         [HttpGet("{id}")]
@@ -24,7 +25,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_commentRepository.GetCommentsByPostId(id));
+                var response = await _commentService.GetCommentsByPostId(id);
                 return Ok(response);
             }
             catch (Exception)
@@ -38,7 +39,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_commentRepository.GetCommentByCommentId(id));
+                var response = await _commentService.GetCommentByCommentId(id);
                 return Ok(response);
             }
             catch (Exception)
@@ -51,7 +52,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_commentRepository.CreateComment(comment));
+                var response = await _commentService.CreateComment(comment);
                 return Ok(response);
             }
             catch (Exception)
@@ -65,7 +66,7 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await Task.FromResult(_commentRepository.UpdateCommentById(id, comment));
+                var response = await _commentService.UpdateCommentById(id, comment);
                 return Ok(response);
             }
             catch (Exception)

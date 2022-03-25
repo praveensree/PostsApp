@@ -8,7 +8,7 @@ namespace Server.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        public Comment CreateComment(Comment comment)
+        public Comment Insert(Comment comment)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace Server.Repository
             }
         }
 
-        public Comment GetCommentByCommentId(int id)
+        public Comment GetByCommentId(int id)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Server.Repository
             }
         }
 
-        public List<Comment> GetCommentsByPostId(int id)
+        public List<Comment> GetByPostId(int id)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Server.Repository
             }
         }
 
-        public Comment UpdateCommentById(int id, Comment comment)
+        public Comment Update(int id, Comment comment)
         {
             try
             {

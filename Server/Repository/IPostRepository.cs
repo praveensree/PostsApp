@@ -8,13 +8,13 @@ namespace Server.Repository
 {
    public interface IPostRepository
     {
-        List<Post> GetSocialPost();
-        Post GetSocialPostById(int id);
+        List<Post> GetAll();
+        Post GetById(int id);
 
-        Post CreateSocialPost(Post post);
+        Post Insert(Post post);
 
-        Post UpdateSocialPost(int id, Post post);
+        Post Update(int id, Post post);
 
-        int UpdateSocialPostLike(int id, string option);
+        int UpdateLikeHeart(int id, string option);
     }
 }
