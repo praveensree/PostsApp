@@ -95,7 +95,7 @@ namespace SocialPostsTest
             var mockRepo = new Mock<IPostService>();
 
             mockRepo.Setup(repo => repo.CreateSocialPost(testFixture.GetTestPostForId()))
-            .Returns(testFixture.GetTestPostById());
+            .Returns(Task.FromResult(new Post()));
 
             var controller = new SocialPostController(mockRepo.Object);
 
