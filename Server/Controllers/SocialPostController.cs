@@ -82,7 +82,7 @@ namespace Server.Controllers
             }
         }
 
-        [HttpPut("LikesandHearts/{id}/{option}")]
+        [HttpPut("LikesandHearts/{option}/{id}")]
         public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
             try
