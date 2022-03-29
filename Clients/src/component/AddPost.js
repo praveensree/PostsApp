@@ -21,11 +21,11 @@ onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 	render(){
 		return (
 			
-			<div class="card border-primary mb-3" style={{width: '40rem' , margin: 'auto'}}>
+			<div className="card border-primary mb-3" style={{width: '40rem' , margin: 'auto'}}>
 				<Card>
-					<Form onSubmit={this.onSubmit}>
+					<Form onSubmit={this.onSubmit} >
 					<FormGroup>
-					<input type="text" name="postName"  placeholder="Title ..." value={this.state.postName} onChange={this.onChange} autofocus/>
+					<input type="text" name="postName"  placeholder="Title ..." value={this.state.postName} onChange={this.onChange} autoFocus/>
 					</FormGroup>
 
 					<FormGroup>
@@ -33,7 +33,7 @@ onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 					</FormGroup>
 
 					<FormGroup>
-						<button type="submit" class="btn btn-primary" onClick={this.toggle}>Post</button>
+						<button type="submit" className="btn btn-primary" onClick={this.toggle}>Post</button>
 					</FormGroup>
 
 					</Form>

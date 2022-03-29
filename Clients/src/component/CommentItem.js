@@ -22,11 +22,11 @@ class CommentItem extends React.Component {
 		 const {postId,commentId,commentDetail} = this.props.comment;
 		return (
 			<Card>
-			<div class="card bg-light mb-3" style={{width: '25rem', margin:'auto'}}>
-			  <div class="card-header"></div>
-			  <div class="card-body">
+			<div className="card bg-light mb-3" style={{width: '25rem', margin:'auto'}}>
+			  <div className="card-header"></div>
+			  <div className="card-body">
 				  <span>
-			    <p class="card-text">{commentDetail}</p>
+			    <p className="card-text">{commentDetail}</p>
 				<br/>
 				<a href="#" onClick={this.toggle}>edit</a>
 					<Modal isOpen={this.state.modal} toggle={this.toggle} >

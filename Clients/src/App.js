@@ -20,23 +20,35 @@ class App extends React.Component {
   }
 
   addpost =  (postName, postDescription) =>{
-    var pst={
+    if(postName!==''&& postDescription!=='')
+    {
+    const pst={
       PostName:postName,
       PostDescription:postDescription
     }
    axios.post('http://localhost:60438/api/SocialPost',pst)
    .then(res => this.setState({ posts: 
     [...this.state.posts, res.data]}));
-  };
+  }
+  else{
+    alert("please type a value")
+  }}
+  
+  
 
   updatePost=(postId,postName,postDescription)=>{
-		var pst={
+    if(postName!==''&& postDescription!=='')
+    {
+		const pst={
 			postName:postName,
 			postDescription:postDescription
 		  }
 		 axios.put('http://localhost:60438/api/SocialPost/'+postId,pst)
 		 .then(res => this.getall()
-		 );
+		 );}
+     else{
+       alert("please type a value")
+     }
 	}
 
   like =  (toggleLike, postId) =>{
@@ -68,8 +80,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div class="jumbotron jumbotron-fluid">
-      <div class="container">
+      <div className="jumbotron jumbotron-fluid">
+      <div className="container">
        <AddPost addpost={this.addpost}/>
         <Posts  posts = {this.state.posts}  likes={this.like} hearts={this.heart} updatePost={this.updatePost}/>
       </div>  

@@ -43,7 +43,7 @@ import { Button,Card} from 'reactstrap';
 	   .then(res => this.setState({ comments: 
 		[...this.state.comments, res.data]}));
     this.setState({commentDetail:""})    
-    ReactDOM.findDOMNode(this.refs.commentDetail).value = "";
+    
 	
   }
   render() {
@@ -55,10 +55,10 @@ import { Button,Card} from 'reactstrap';
 			<CommentItem key={comment.commentId} comment={comment} updateComment={this.updateComment}/>
 			))
 		}
-		<div class="card bg-light mb-3" style={{width: '25rem', margin:'auto'}}>
-			<div class="card-header">Write a comment ...</div>
-			  <div class="card-body">		 
-				<p><textarea type="text" name="commentDetail" ref="commentDetail" rows="1" cols="45" placeholder=" Comment ..." onChange={this.onChange} /></p>
+		<div className="card bg-light mb-3" style={{width: '25rem', margin:'auto'}}>
+			<div className="card-header">Write a comment ...</div>
+			  <div className="card-body">		 
+				<p><textarea type="text" name="commentDetail" rows="1" cols="45" placeholder=" Comment ..." value={this.state.commentDetail} onChange={this.onChange} /></p>
 				<p><Button onClick={this.addComment} >Post</Button></p>
 			</div>
 			</div>

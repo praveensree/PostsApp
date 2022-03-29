@@ -24,12 +24,12 @@ class EditComment extends React.Component {
         // const{commentId,commentDetail}=this.props.comment
         return (
             <Card>
-                <div class="card bg-light mb-3" style={{ width: '25rem', margin: 'auto' }}>
-                    <div class="card-header">modify comment</div>
-                    <div class="card-body">
+                <div className="card bg-light mb-3" style={{ width: '25rem', margin: 'auto' }}>
+                    <div className="card-header">modify comment</div>
+                    <div className="card-body">
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
-                                <textarea type="text" name="commentDetail" ref="commentDetail" rows="1" cols="45" value={this.state.commentDetail} onChange={this.onChange} />
+                                <textarea type="text" name="commentDetail"  rows="1" cols="45" value={this.state.commentDetail} onChange={this.onChange} />
                             </FormGroup>
                             <FormGroup>
                                 <p><Button type="submit" >Save</Button></p>

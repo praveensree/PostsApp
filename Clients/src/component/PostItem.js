@@ -43,11 +43,11 @@ export class PostItem extends React.Component {
 		const { postId, postName, postDescription, likes, hearts } = this.props.post;
 		return (
 			<Router>
-				<div class="card border-primary mb-3" style={{ width: '40rem', margin: 'auto' }}>
-					<div class="card-header">
+				<div className="card border-primary mb-3" style={{ width: '40rem', margin: 'auto' }}>
+					<div className="card-header">
 					</div>
-					<div class="card-body">
-						<h4 class="card-title">{postName}</h4>
+					<div className="card-body">
+						<h4 className="card-title">{postName}</h4>
 						<span>
 							<p class="card-text">{postDescription}<span>
 								<a href="#" onClick={this.posttoggle}>   <i className="fa fa-edit" /></a>
