@@ -6,11 +6,17 @@ class CommentItem extends React.Component {
 	state=
 	{
 		modal:false,
-		commentDetail:""
+		commentDetail:"",
+		
 	}
 	toggle = () =>{
 		this.setState({modal : !this.state.modal})
 	}
+	updateComment =  (commentId,commentDetail) =>{
+		
+		this.props.updateComment(commentId, commentDetail);
+		this.toggle();
+	  };
 	
 	render() {
 		 const {postId,commentId,commentDetail} = this.props.comment;
@@ -26,7 +32,7 @@ class CommentItem extends React.Component {
 					<Modal isOpen={this.state.modal} toggle={this.toggle} >
 					<ModalHeader toggle={this.toggle}>Edit Comment</ModalHeader>
 					<ModalBody>
-					<EditComment commentDetail={this.props.comment.commentDetail} commentId={this.props.comment.commentId} updateComment={this.props.updateComment}/>
+					<EditComment commentDetail={this.props.comment.commentDetail} commentId={this.props.comment.commentId} updateComment={this.updateComment}/>
 					</ModalBody>
 						</Modal>
 				</span>

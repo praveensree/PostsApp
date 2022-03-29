@@ -5,7 +5,7 @@ import  PropTypes from 'prop-types';
 import { Button,Card} from 'reactstrap';
  import ReactDOM from 'react-dom';
 
-export class Comments extends React.Component {
+ export class Comments extends React.Component {
 
 	state=
 	{

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card,Button,Form,FormGroup, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
- class EditPost extends Component {
+class EditPost extends Component {
     state = {
 		postDescription:this.props.postDescription,
 		postName:this.props.postName,
@@ -11,6 +11,8 @@ import { Card,Button,Form,FormGroup, Modal, ModalHeader, ModalBody } from 'react
         e.preventDefault();
    this.props.updatePost(this.state.postId, this.state.postName,this.state.postDescription);
     }
+
+    
     
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
 
