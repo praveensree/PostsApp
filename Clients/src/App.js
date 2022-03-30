@@ -26,7 +26,7 @@ class App extends React.Component {
       PostName:postName,
       PostDescription:postDescription
     }
-   axios.post('http://localhost:60438/api/SocialPost',pst)
+   axios.post('http://localhost:60439/api/SocialPost',pst)
    .then(res => this.setState({ posts: 
     [...this.state.posts, res.data]}));
   }
@@ -43,7 +43,7 @@ class App extends React.Component {
 			postName:postName,
 			postDescription:postDescription
 		  }
-		 axios.put('http://localhost:60438/api/SocialPost/'+postId,pst)
+		 axios.put('http://localhost:60439/api/SocialPost/'+postId,pst)
 		 .then(res => this.getall()
 		 );}
      else{
@@ -56,7 +56,7 @@ class App extends React.Component {
     if(toggleLike){
       option="unlike"
     }
-   axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/'+option+'/'+postId,)
+   axios.put('http://localhost:60439/api/SocialPost/LikesandHearts/'+option+'/'+postId,)
    .then(res => 
     this.getall())
   };
