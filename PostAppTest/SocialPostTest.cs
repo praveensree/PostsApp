@@ -70,7 +70,9 @@ namespace SocialPostsTest
 
             var result = await controller.UpdateSocialPost(1, testFixture.GetTestPostForId()) as OkObjectResult;
 
-            Assert.Contains(It.IsAny<Post>(), (IEnumerable<Post>)result);
+            var actualResponse = result.Value as Post;
+
+            Assert.NotNull(actualResponse);
         }
 
         [Fact]
@@ -94,14 +96,16 @@ namespace SocialPostsTest
             // Arrange
             var mockRepo = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.CreateSocialPost(testFixture.GetTestPostForId()))
+            mockRepo.Setup(repo => repo.CreateSocialPost(It.IsAny<Post>()))
             .Returns(Task.FromResult(new Post()));
 
             var controller = new SocialPostController(mockRepo.Object);
 
             var result = await controller.CreateSocialPost(testFixture.GetTestPostForId()) as OkObjectResult;
 
-            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+            var actualResponse = result.Value as Post;
+
+            Assert.NotNull(actualResponse);
         }
     }
 }

@@ -65,15 +65,17 @@ namespace PostAppTest
             // Arrange
             var mockRepo = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.CreateComment(testFixture.CreateCommentforId()))
+            mockRepo.Setup(repo => repo.CreateComment(It.IsAny<Comment>()))
             .Returns(testFixture.CreatedCommentforId());
 
             var controller = new CommentsController(mockRepo.Object);
 
             var result = await controller.CreateComment(testFixture.CreateCommentforId()) as OkObjectResult;
 
-            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
-        
+            //Assert.Single((IEnumerable<Comment>)result);
+
+            Assert.NotNull(result);
+
         }
 
         [Fact]
@@ -82,15 +84,18 @@ namespace PostAppTest
            
             var mockRepo = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.UpdateCommentById(2, testFixture.GetTestCommentForId()))
+            mockRepo.Setup(repo => repo.UpdateCommentById(It.IsAny<int>(), It.IsAny<Comment>()))
             .Returns(testFixture.GetTestCommentById());
 
             var controller = new CommentsController(mockRepo.Object);
 
             var result = await controller.UpdateCommentById(2, testFixture.GetTestCommentForId()) as OkObjectResult;
 
-            
-            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+            var actualResponse = result.Value as Comment;
+
+           Assert.NotNull(actualResponse);
+
+           // Assert.Contains(actualResponse, (IEnumerable<Comment>)testFixture.GetTestCommentForId());
      
         }
 
