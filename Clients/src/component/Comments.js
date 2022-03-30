@@ -14,7 +14,7 @@ import { Button,Card} from 'reactstrap';
 	}
 	getComments(){
 		axios
-		.get("http://localhost:60438/api/Comments/"+ this.props.postId)
+		.get(`${process.env.REACT_APP_COMMENT_URL}/${ this.props.postId}`)
 		.then(res => this.setState({ comments: res.data }));	
 	}
 
@@ -26,7 +26,7 @@ import { Button,Card} from 'reactstrap';
     var cmt={
       commentDetail:commentDetail
     }
-   axios.put('http://localhost:60438/api/Comments/'+commentId,cmt)
+   axios.put(`${process.env.REACT_APP_COMMENT_URL}/${commentId}`,cmt)
    .then(res => this.getComments()
    );
   };
@@ -39,7 +39,7 @@ import { Button,Card} from 'reactstrap';
 		postId: this.props.postId,
 		commentDetail: this.state.commentDetail
 	   }
-	   axios.post("http://localhost:60438/api/Comments",comment)
+	   axios.post(`${process.env.REACT_APP_COMMENT_URL}`,comment)
 	   .then(res => this.setState({ comments: 
 		[...this.state.comments, res.data]}));
     this.setState({commentDetail:""})    
