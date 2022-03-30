@@ -11,7 +11,7 @@ class App extends React.Component {
   };
   getall=()=>{
     axios
-    .get("http://localhost:60438/api/SocialPost")
+    .get(`${process.env.REACT_APP_POST_URL}`)
     .then(res => this.setState({ posts: res.data }));
   }
 
@@ -66,17 +66,9 @@ class App extends React.Component {
     if(toggleHeart){
       option="disheart"
     }
-    axios.put('http://localhost:60438/api/SocialPost/LikesandHearts/'+option+'/'+postId,)
+    axios.put(`${process.env.REACT_APP_POST_URL}/LikesandHearts/${option}`+postId,)
     .then(res =>this.getall())
    };
-
-  delPost = id => {
-    axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`).then(res =>
-      this.setState({
-        posts: [...this.state.posts.filter(post => post.id !== id)]
-      })
-    );
-  };
 
   render() {
     return (
