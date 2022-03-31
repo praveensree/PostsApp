@@ -26,12 +26,12 @@ namespace PostAppTest
         public async System.Threading.Tasks.Task GetCommentsByPostId_Returns_All_CommentsAsync()
         {
             // Arrange
-            var mockRepo = new Mock<ICommentService>();
+            var mockService = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.GetCommentsByPostId(1))
+            mockService.Setup(repo => repo.GetCommentsByPostId(1))
             .Returns(testFixture.GetTestComments());
 
-            var controller = new CommentsController(mockRepo.Object);
+            var controller = new CommentsController(mockService.Object);
 
             var result = await controller.GetCommentsByPostId(1) as OkObjectResult;
 
@@ -44,12 +44,12 @@ namespace PostAppTest
         public async System.Threading.Tasks.Task GetCommentsByCommentId_Returns_CommentAsync()
         {
             // Arrange
-            var mockRepo = new Mock<ICommentService>();
+            var mockService = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.GetCommentByCommentId(1))
+            mockService.Setup(repo => repo.GetCommentByCommentId(1))
             .Returns(testFixture.GetTestCommentById());
 
-            var controller = new CommentsController(mockRepo.Object);
+            var controller = new CommentsController(mockService.Object);
 
             var result = await controller.GetCommentByCommentId(1) as OkObjectResult;
 
@@ -63,12 +63,12 @@ namespace PostAppTest
         public async Task CreateComment_Returns_CommentAsync()
         {
             // Arrange
-            var mockRepo = new Mock<ICommentService>();
+            var mockService = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.CreateComment(It.IsAny<Comment>()))
+            mockService.Setup(repo => repo.CreateComment(It.IsAny<Comment>()))
             .Returns(testFixture.CreatedCommentforId());
 
-            var controller = new CommentsController(mockRepo.Object);
+            var controller = new CommentsController(mockService.Object);
 
             var result = await controller.CreateComment(testFixture.CreateCommentforId()) as OkObjectResult;
 
@@ -82,12 +82,12 @@ namespace PostAppTest
         public async System.Threading.Tasks.Task UpdateSocialPost_Returns_PostAsync()
         {
            
-            var mockRepo = new Mock<ICommentService>();
+            var mockService = new Mock<ICommentService>();
 
-            mockRepo.Setup(repo => repo.UpdateCommentById(It.IsAny<int>(), It.IsAny<Comment>()))
+            mockService.Setup(repo => repo.UpdateCommentById(It.IsAny<int>(), It.IsAny<Comment>()))
             .Returns(testFixture.GetTestCommentById());
 
-            var controller = new CommentsController(mockRepo.Object);
+            var controller = new CommentsController(mockService.Object);
 
             var result = await controller.UpdateCommentById(2, testFixture.GetTestCommentForId()) as OkObjectResult;
 
