@@ -26,12 +26,12 @@ namespace SocialPostsTest
         public async Task GetAllSocialPost_Returns_All_postsAsync()
         {
             // Arrange
-            var mockRepo = new Mock<IPostService>();
+            var mockService = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.GetSocialPost())
+            mockService.Setup(repo => repo.GetSocialPost())
             .Returns(testFixture.GetTestPost());
 
-            var controller = new SocialPostController(mockRepo.Object);
+            var controller = new SocialPostController(mockService.Object);
 
             var result =  await controller.GetSocialPost() as OkObjectResult;
 
@@ -43,12 +43,12 @@ namespace SocialPostsTest
         [Fact]
         public async Task GetSocialPostById_Returns_PostAsync()
         {
-            var mockRepo = new Mock<IPostService>();
+            var mockService = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.GetSocialPostById(1))
+            mockService.Setup(repo => repo.GetSocialPostById(1))
             .Returns(testFixture.GetTestPostById());
 
-            var controller = new SocialPostController(mockRepo.Object);
+            var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.GetSocialPostById(1) as OkObjectResult;
 
@@ -61,12 +61,12 @@ namespace SocialPostsTest
         public async Task UpdateSocialPost_Returns_PostAsync()
         {
                 
-            var mockRepo = new Mock<IPostService>();
+            var mockService = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.UpdateSocialPost(It.IsAny<int>(), It.IsAny<Post>()))
+            mockService.Setup(repo => repo.UpdateSocialPost(It.IsAny<int>(), It.IsAny<Post>()))
             .Returns(testFixture.GetTestPostById());
 
-            var controller = new SocialPostController(mockRepo.Object);
+            var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.UpdateSocialPost(1, testFixture.GetTestPostForId()) as OkObjectResult;
 
@@ -79,11 +79,11 @@ namespace SocialPostsTest
         public async Task UpdateSocialPostLike_returns_intAsync()
         {
            
-            var mockRepo = new Mock<IPostService>();
-            mockRepo.Setup(repo => repo.UpdateSocialPostLikeHeart(1, "like"))
+            var mockService = new Mock<IPostService>();
+            mockService.Setup(repo => repo.UpdateSocialPostLikeHeart(1, "like"))
             .Returns(Task.FromResult(2));
 
-            var controller = new SocialPostController(mockRepo.Object);
+            var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.UpdateSocialPostLikeHeart(1, "like") as OkObjectResult;
 
@@ -94,12 +94,12 @@ namespace SocialPostsTest
         public async Task CreateSocialPost_Returns_PostAsync()
         {
             // Arrange
-            var mockRepo = new Mock<IPostService>();
+            var mockService = new Mock<IPostService>();
 
-            mockRepo.Setup(repo => repo.CreateSocialPost(It.IsAny<Post>()))
+            mockService.Setup(repo => repo.CreateSocialPost(It.IsAny<Post>()))
             .Returns(Task.FromResult(new Post()));
 
-            var controller = new SocialPostController(mockRepo.Object);
+            var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.CreateSocialPost(testFixture.GetTestPostForId()) as OkObjectResult;
 
