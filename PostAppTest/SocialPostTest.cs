@@ -29,7 +29,7 @@ namespace SocialPostsTest
             var mockService = new Mock<IPostService>();
 
             mockService.Setup(repo => repo.GetSocialPost())
-            .Returns(testFixture.GetTestPost());
+            .Returns(testFixture.GetTestPostList());
 
             var controller = new SocialPostController(mockService.Object);
 
@@ -37,7 +37,9 @@ namespace SocialPostsTest
 
             var actualResponse = result.Value as List<Post>;
 
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
             Assert.True(actualResponse.Count > 0);
+
         }
 
         [Fact]
@@ -46,33 +48,36 @@ namespace SocialPostsTest
             var mockService = new Mock<IPostService>();
 
             mockService.Setup(repo => repo.GetSocialPostById(1))
-            .Returns(testFixture.GetTestPostById());
+            .Returns(testFixture.GetTestPost());
 
             var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.GetSocialPostById(1) as OkObjectResult;
 
-            var actualResponse = result.Value as Post;
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
 
-            Assert.NotNull(actualResponse);
+            Assert.True(result.Value.GetType() == typeof(Post));
         }
 
         [Fact]
         public async Task UpdateSocialPost_Returns_PostAsync()
-        {
-                
+        {     
             var mockService = new Mock<IPostService>();
 
             mockService.Setup(repo => repo.UpdateSocialPost(It.IsAny<int>(), It.IsAny<Post>()))
-            .Returns(testFixture.GetTestPostById());
+            .Returns(testFixture.GetTestPost());
 
             var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.UpdateSocialPost(1, testFixture.GetTestPostForId()) as OkObjectResult;
 
-            var actualResponse = result.Value as Post;
+            //var actualResponse = result.Value as Post;
 
-            Assert.NotNull(actualResponse);
+            //Assert.NotNull(actualResponse);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+            Assert.True(result.Value.GetType() == typeof(Post));
+
+
         }
 
         [Fact]
@@ -88,6 +93,7 @@ namespace SocialPostsTest
             var result = await controller.UpdateSocialPostLikeHeart(1, "like") as OkObjectResult;
 
             Assert.Equal(2, result.Value);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
         }
 
         [Fact]
@@ -97,15 +103,19 @@ namespace SocialPostsTest
             var mockService = new Mock<IPostService>();
 
             mockService.Setup(repo => repo.CreateSocialPost(It.IsAny<Post>()))
-            .Returns(Task.FromResult(new Post()));
+            .Returns(testFixture.GetTestPost());
 
             var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.CreateSocialPost(testFixture.GetTestPostForId()) as OkObjectResult;
 
-            var actualResponse = result.Value as Post;
+            //var actualResponse = result.Value as Post;    
 
-            Assert.NotNull(actualResponse);
+            //Assert.NotNull(actualResponse);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
+            Assert.True(result.Value.GetType() == typeof(Post));
+
+
         }
     }
 }
