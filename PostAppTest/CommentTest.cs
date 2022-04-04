@@ -37,7 +37,9 @@ namespace PostAppTest
 
             var actualResponse = result.Value as List<Comment>;
 
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode); 
             Assert.Single(actualResponse);
+
         }
 
         [Fact]
@@ -53,9 +55,11 @@ namespace PostAppTest
 
             var result = await controller.GetCommentByCommentId(1) as OkObjectResult;
 
-            var actualResponse = result.Value as Comment;
+            //var actualResponse = result.Value as List<Comment>;
 
-            Assert.NotNull(actualResponse);
+            //Assert.True(actualResponse.Count>0);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode); 
+            Assert.True(result.Value.GetType() == typeof(Comment));
         }
 
         [Fact]
@@ -74,7 +78,9 @@ namespace PostAppTest
 
             //Assert.Single((IEnumerable<Comment>)result);
 
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode); 
             Assert.NotNull(result);
+            Assert.True(result.Value.GetType() == typeof(Comment));
 
         }
 
@@ -94,9 +100,10 @@ namespace PostAppTest
             var actualResponse = result.Value as Comment;
 
            Assert.NotNull(actualResponse);
+            Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode); 
+            Assert.True(result.Value.GetType() == typeof(Comment));
+            // Assert.Contains(actualResponse, (IEnumerable<Comment>)testFixture.GetTestCommentForId());
 
-           // Assert.Contains(actualResponse, (IEnumerable<Comment>)testFixture.GetTestCommentForId());
-     
         }
 
     }

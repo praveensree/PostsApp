@@ -89,7 +89,7 @@ namespace PostAppTest.Utilities
 
             return Task.FromResult(res);
         }
-        public Task<Post> GetTestPostById()
+        public Task<Post> GetTestPost()
         {
             var res = new Post()
             {
@@ -122,7 +122,7 @@ namespace PostAppTest.Utilities
         }
 
 
-        public Task<List<Post>> GetTestPost()
+        public Task<List<Post>> GetTestPostList()
         {
             List<Post> post = new List<Post>();
             var res = new Post()
