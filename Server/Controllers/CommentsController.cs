@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Server.Models;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Server.Repository;
-using Server.Services;
+using PostApp.Repository;
+using PostApp.Services;
 
 namespace Server.Controllers
 {
@@ -20,61 +20,40 @@ namespace Server.Controllers
             _commentService = commentService;
         }
 
+        //GET api/Comments/1014
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCommentsByPostId(int id)
         {
-            try
-            {
+            
                 var response = await _commentService.GetCommentsByPostId(id);
                 return Ok(response);
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
         }
 
+        //GET api/Comments/CommentbyId/1014
         [HttpGet("CommentbyId/{id}")]
         public async Task<IActionResult> GetCommentByCommentId(int id)
         {
-            try
-            {
+           
                 var response = await _commentService.GetCommentByCommentId(id);
                 return Ok(response);
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
         }
+
+        //POST api/Comments
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
-            try
-            {
                 var response = await _commentService.CreateComment(comment);
                 return Ok(response);
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
         }
 
+        //PUT api/Comments/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCommentById(int id, [FromBody] Comment comment)
         {
-            try
-            {
-                var response = await _commentService.UpdateCommentById(id, comment);
-                return Ok(response);
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
-            }
-}
+            var response = await _commentService.UpdateCommentById(id, comment);
+            return Ok(response);
+        }
+    }
 
 }
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Server.Models
+namespace PostApp.Models
 {
     public partial class fbContext : DbContext
     {

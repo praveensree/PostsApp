@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using PostAppTest.Utilities;
 using Server.Controllers;
-using Server.Models;
-using Server.Services;
+using PostApp.Models;
+using PostApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -53,10 +53,12 @@ namespace SocialPostsTest
             var controller = new SocialPostController(mockService.Object);
 
             var result = await controller.GetSocialPostById(1) as OkObjectResult;
+            var actualResponse = result.Value as Post;
 
             Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
 
             Assert.True(result.Value.GetType() == typeof(Post));
+            Assert.Equal(1, actualResponse.PostId);
         }
 
         [Fact]
@@ -71,11 +73,12 @@ namespace SocialPostsTest
 
             var result = await controller.UpdateSocialPost(1, testFixture.GetTestPostForId()) as OkObjectResult;
 
-            //var actualResponse = result.Value as Post;
+            var actualResponse = result.Value as Post;
 
             //Assert.NotNull(actualResponse);
             Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
             Assert.True(result.Value.GetType() == typeof(Post));
+            Assert.Equal("Biggest fish",actualResponse.PostDescription);
 
 
         }

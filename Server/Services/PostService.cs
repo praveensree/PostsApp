@@ -1,11 +1,11 @@
-﻿using Server.Models;
-using Server.Repository;
+﻿using PostApp.Models;
+using PostApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Services
+namespace PostApp.Services
 {
     public class PostService : IPostService
     {
@@ -14,13 +14,15 @@ namespace Server.Services
         {
             _postRepository = postRepository;
         }
-        public Task<Post> CreateSocialPost(Post post)
+        public  Task<Post> CreateSocialPost(Post post)
         {
+           
             return Task.FromResult(_postRepository.Insert(post));
         }
 
         public Task<List<Post>> GetSocialPost()
         {
+
             return Task.FromResult(_postRepository.GetAll());
         }
 

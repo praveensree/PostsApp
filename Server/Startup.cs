@@ -5,14 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Server.Repository;
-using Server.Services;
+using PostApp.Repository;
+using PostApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server
+namespace PostApp
 {
     public class Startup
     {

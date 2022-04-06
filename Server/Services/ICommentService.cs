@@ -1,10 +1,10 @@
-﻿using Server.Models;
+﻿using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Services
+namespace PostApp.Services
 {
    public interface ICommentService
     {

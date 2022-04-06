@@ -1,11 +1,11 @@
-﻿using Server.Models;
-using Server.Repository;
+﻿using PostApp.Models;
+using PostApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Services
+namespace PostApp.Services
 {
     public class CommentService:ICommentService
     {

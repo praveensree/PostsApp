@@ -2,8 +2,8 @@
 using Moq;
 using PostAppTest.Utilities;
 using Server.Controllers;
-using Server.Models;
-using Server.Services;
+using PostApp.Models;
+using PostApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -102,7 +102,7 @@ namespace PostAppTest
            Assert.NotNull(actualResponse);
             Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode); 
             Assert.True(result.Value.GetType() == typeof(Comment));
-            // Assert.Contains(actualResponse, (IEnumerable<Comment>)testFixture.GetTestCommentForId());
+            Assert.Equal("nice one", actualResponse.CommentDetail);
 
         }
 
