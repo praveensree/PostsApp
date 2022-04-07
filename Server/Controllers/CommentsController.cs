@@ -42,16 +42,31 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
+            if (comment != null && comment.CommentDetail!=null && comment.CommentDetail!="")
+            {
                 var response = await _commentService.CreateComment(comment);
                 return Ok(response);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         //PUT api/Comments/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCommentById(int id, [FromBody] Comment comment)
         {
-            var response = await _commentService.UpdateCommentById(id, comment);
-            return Ok(response);
+            if (comment != null)
+            {
+                var response = await _commentService.UpdateCommentById(id, comment);
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 

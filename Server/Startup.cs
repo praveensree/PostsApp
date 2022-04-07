@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PostApp.Models;
 using PostApp.Repository;
 using PostApp.Services;
 using System;
@@ -33,6 +35,8 @@ namespace PostApp
             services.AddScoped<ICommentService, CommentService>();
 
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddDbContext<fbContext>(options =>
+         options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
             services.AddCors(c =>
             {

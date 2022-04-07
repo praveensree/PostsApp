@@ -1,4 +1,5 @@
-﻿using PostApp.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

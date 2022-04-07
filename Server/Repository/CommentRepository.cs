@@ -8,19 +8,22 @@ namespace PostApp.Repository
 {
     public class CommentRepository : ICommentRepository
     {
+        private readonly fbContext context;
+
+        public CommentRepository(fbContext context)
+        {
+            this.context = context;
+        }
         public Comment Insert(Comment comment)
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
                     comment.CreatedDate = DateTime.Now;
                     comment.UpdatedDate = null;
-
-                    fb.Comments.Add(comment);
-                    fb.SaveChanges();
+                    context.Comments.Add(comment);
+                    context.SaveChangesAsync();
                     return comment;
-                }
+               
             }
             catch (Exception ex)
             {
@@ -32,12 +35,9 @@ namespace PostApp.Repository
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
 
-                    var Comment = fb.Comments.Where(s => s.CommentId == id).First();
+                    var Comment = context.Comments.Where(s => s.CommentId == id).First();
                     return Comment;
-                }
             }
             catch (Exception ex)
             {
@@ -49,11 +49,8 @@ namespace PostApp.Repository
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
+                    var CommentList = context.Comments.Where(s => s.PostId == id).ToList();
                     return CommentList;
-                }
             }
             catch (Exception ex)
             {
@@ -65,15 +62,13 @@ namespace PostApp.Repository
         {
             try
             {
-                using (fbContext fb = new fbContext())
-                {
-                    var update = fb.Comments.First(x => x.CommentId == id);
+                    var update = context.Comments.First(x => x.CommentId == id);
 
                     update.CommentDetail = comment.CommentDetail;
                     update.UpdatedDate = DateTime.Now;
-                    fb.SaveChanges();
-                    return fb.Comments.First(x => x.CommentId == id);
-                }
+                    context.SaveChanges();
+                    return context.Comments.First(x => x.CommentId == id);
+                
             }
             catch (Exception ex)
             {

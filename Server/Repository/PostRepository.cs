@@ -8,94 +8,83 @@ namespace PostApp.Repository
 {
     public class PostRepository : IPostRepository
     {
+
+        private readonly fbContext context;
+
+        public PostRepository(fbContext context)
+        {
+            this.context = context;
+        }
         public Post Insert(Post post)
         {
-            using (fbContext fb = new fbContext())
-            {
-                try
-                {
                     post.CreatedDate = DateTime.Now;
                     post.UpdatedDate = null;
                     post.Likes = 0;
                     post.Hearts = 0;
-                    fb.Posts.Add(post);
-                    fb.SaveChanges();
+                    context.Posts.Add(post);
+                    context.SaveChangesAsync();
                     return post;
-                }
-
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
         }
 
         public List<Post> GetAll()
         {
-            using (fbContext fb = new fbContext())
-            {
-                return fb.Posts.ToList();
-            }
+            
+                return context.Posts.ToList();
+           
         }
 
         public Post GetById(int id)
         {
-            using (fbContext fb = new fbContext())
-            {
                 try
                 {
-
-
-                    return fb.Posts.First(x => x.PostId == id);
+                    return context.Posts.First(x => x.PostId == id);
 
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-            }
+           
         }
 
         public Post Update(int id, Post post)
         {
-            using (fbContext fb = new fbContext())
-            {
+            
                 try
                 {
-                    var update = fb.Posts.First(x => x.PostId == id);
+                    var update = context.Posts.First(x => x.PostId == id);
                     update.PostName = post.PostName;
                     update.PostDescription = post.PostDescription;
                     update.UpdatedDate = DateTime.Now;
-                    fb.SaveChanges();
-                    return fb.Posts.First(x => x.PostId == id);
+                    context.SaveChanges();
+                    return context.Posts.First(x => x.PostId == id);
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-            }
+            
         }
 
         public int UpdateLikeHeart(int id, string option)
         {
-            using (fbContext fb = new fbContext())
-            {
+           
                 try
                 {
 
-                    var update = fb.Posts.First(x => x.PostId == id);
+                    var update = context.Posts.First(x => x.PostId == id);
                     if (option == "like" || option == "heart")
                     {
                         if (option == "like")
                         {
                             update.Likes++;
-                            fb.SaveChanges();
+                            context.SaveChanges();
                             return (int)update.Likes;
                         }
                         else
                         {
                             update.Hearts++;
-                            fb.SaveChanges();
+                            context.SaveChanges();
                             return (int)update.Hearts;
                         }
                     }
@@ -106,13 +95,13 @@ namespace PostApp.Repository
                             if (update.Likes > 0)
                             {
                                 update.Likes--;
-                                fb.SaveChanges();
+                                context.SaveChanges();
                                 return (int)update.Likes;
                             }
                             else
                             {
                                 update.Likes = 0;
-                                fb.SaveChanges();
+                                context.SaveChanges();
                                 return (int)update.Likes;
                             }
                         }
@@ -121,13 +110,13 @@ namespace PostApp.Repository
                             if (update.Hearts > 0)
                             {
                                 update.Hearts--;
-                                fb.SaveChanges();
+                                context.SaveChanges();
                                 return (int)update.Hearts;
                             }
                             else
                             {
                                 update.Hearts = 0;
-                                fb.SaveChanges();
+                                context.SaveChanges();
                                 return (int)update.Hearts;
                             }
                         }
@@ -143,7 +132,7 @@ namespace PostApp.Repository
                 {
                     throw ex;
                 }
-            }
+            
         }
     }
 }

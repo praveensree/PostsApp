@@ -16,29 +16,62 @@ namespace PostApp.Services
         }
         public  Task<Post> CreateSocialPost(Post post)
         {
-           
-            return Task.FromResult(_postRepository.Insert(post));
+            try
+            {
+                return Task.FromResult(_postRepository.Insert(post));
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<List<Post>> GetSocialPost()
         {
-
-            return Task.FromResult(_postRepository.GetAll());
+            try
+            {
+                return Task.FromResult(_postRepository.GetAll());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<Post> GetSocialPostById(int id)
         {
-            return Task.FromResult(_postRepository.GetById(id));
+            try
+            {
+                return Task.FromResult(_postRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<Post> UpdateSocialPost(int id, Post post)
         {
-            return Task.FromResult(_postRepository.Update(id,post));
+            try
+            {
+                return Task.FromResult(_postRepository.Update(id, post));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<int> UpdateSocialPostLikeHeart(int id, string option)
         {
-            return Task.FromResult(_postRepository.UpdateLikeHeart(id,option));
+            try
+            {
+                return Task.FromResult(_postRepository.UpdateLikeHeart(id, option));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
        

@@ -26,32 +26,45 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSocialPost()
         {
-                var response = await _postService.GetSocialPost();
-                return Ok(response);
+            var response = await _postService.GetSocialPost();
+            return Ok(response);
         }
 
         // GET api/SocialPost/1014
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSocialPostById(int id)
         {
-                var response = await _postService.GetSocialPostById(id);
-                return Ok(response);
+            var response = await _postService.GetSocialPostById(id);
+            return Ok(response);
         }
 
         // POST api/SocialPost
         [HttpPost]
         public async Task<IActionResult> CreateSocialPost([FromBody] Post post)
         {
+            if (post != null && post.PostDescription != "" && post.PostName != "" && post.PostDescription != null && post.PostName != null) {
                 var response = await _postService.CreateSocialPost(post);
                 return Ok(response);
+            }
+            else
+            {
+                return BadRequest("please write about Post");
+            }
         }
 
         // PUT api/SocialPost/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
+            if (post != null && post.PostDescription!="" && post.PostName!="")
+            {
                 var response = await _postService.UpdateSocialPost(id, post);
                 return Ok(response);
+            }
+            else
+            {
+                return BadRequest("please write about Post");
+            }
         }
 
         //put api/SocialPost/LikesandHearts/1014/unlike
