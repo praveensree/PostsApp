@@ -25,25 +25,42 @@ namespace PostApp.Services
             {
                 throw ex;
             }
-
         }
 
         public Task<Comment> GetCommentByCommentId(int id)
         {
-            return _commentRepository.GetByCommentId(id);
-
+            try
+            {
+                return _commentRepository.GetByCommentId(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<List<Comment>> GetCommentsByPostId(int id)
         {
-            return _commentRepository.GetByPostId(id);
-
+            try
+            {
+                return _commentRepository.GetByPostId(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<Comment> UpdateCommentById(int id, Comment comment)
         {
-            return _commentRepository.Update(id, comment);
-
+            try
+            {
+                return _commentRepository.Update(id, comment);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

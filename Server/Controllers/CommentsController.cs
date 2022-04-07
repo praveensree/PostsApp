@@ -24,25 +24,23 @@ namespace Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCommentsByPostId(int id)
         {
-            
-                var response = await _commentService.GetCommentsByPostId(id);
-                return Ok(response);
+            var response = await _commentService.GetCommentsByPostId(id);
+            return Ok(response);
         }
 
         //GET api/Comments/CommentbyId/1014
         [HttpGet("CommentbyId/{id}")]
         public async Task<IActionResult> GetCommentByCommentId(int id)
         {
-           
-                var response = await _commentService.GetCommentByCommentId(id);
-                return Ok(response);
+            var response = await _commentService.GetCommentByCommentId(id);
+            return Ok(response);
         }
 
         //POST api/Comments
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
-            if (comment != null && comment.CommentDetail!=null && comment.CommentDetail!="")
+            if (comment != null && comment.CommentDetail != null && comment.CommentDetail != "")
             {
                 var response = await _commentService.CreateComment(comment);
                 return Ok(response);
@@ -69,6 +67,5 @@ namespace Server.Controllers
             }
         }
     }
-
 }
 

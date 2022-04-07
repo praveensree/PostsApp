@@ -10,14 +10,9 @@ namespace PostApp.Services
     public interface IPostService
     {
         Task<List<Post>> GetSocialPost();
-
         Task<Post> GetSocialPostById(int id);
-
         Task<Post> CreateSocialPost(Post post);
-
         Task<Post> UpdateSocialPost(int id, Post post);
-
-        Task<int> UpdateSocialPostLikeHeart(int id, string option);
-            
+        Task<int> UpdateSocialPostLikeHeart(int id, string option);     
     }
 }

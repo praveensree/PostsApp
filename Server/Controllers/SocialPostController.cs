@@ -42,7 +42,8 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSocialPost([FromBody] Post post)
         {
-            if (post != null && post.PostDescription != "" && post.PostName != "" && post.PostDescription != null && post.PostName != null) {
+            if (post != null && post.PostDescription != "" && post.PostName != "" && post.PostDescription != null && post.PostName != null)
+            {
                 var response = await _postService.CreateSocialPost(post);
                 return Ok(response);
             }
@@ -56,7 +57,7 @@ namespace Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
-            if (post != null && post.PostDescription!="" && post.PostName!="")
+            if (post != null && post.PostDescription != "" && post.PostName != "")
             {
                 var response = await _postService.UpdateSocialPost(id, post);
                 return Ok(response);
@@ -71,8 +72,8 @@ namespace Server.Controllers
         [HttpPut("LikesandHearts/{option}/{id}")]
         public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
-                var response = await _postService.UpdateSocialPostLikeHeart(id, option);
-                return Ok(response);  
+            var response = await _postService.UpdateSocialPostLikeHeart(id, option);
+            return Ok(response);
         }
 
     }

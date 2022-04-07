@@ -10,7 +10,6 @@ namespace PostApp.Services
     {
         Task<List<Comment>> GetCommentsByPostId(int id);
         Task<Comment> GetCommentByCommentId(int id);
-
         Task<Comment> CreateComment(Comment comment);
         Task<Comment> UpdateCommentById(int id, Comment comment);
     }

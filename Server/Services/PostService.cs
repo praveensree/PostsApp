@@ -14,13 +14,13 @@ namespace PostApp.Services
         {
             _postRepository = postRepository;
         }
-        public  Task<Post> CreateSocialPost(Post post)
+        public Task<Post> CreateSocialPost(Post post)
         {
             try
             {
                 return _postRepository.Insert(post);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -73,7 +73,5 @@ namespace PostApp.Services
                 throw ex;
             }
         }
-
-       
     }
 }
