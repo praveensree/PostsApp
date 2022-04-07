@@ -1,4 +1,5 @@
-﻿using PostApp.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,29 +16,29 @@ namespace PostApp.Repository
         {
             this.context = context;
         }
-        public Post Insert(Post post)
+        public async Task<Post> Insert(Post post)
         {
                     post.CreatedDate = DateTime.Now;
                     post.UpdatedDate = null;
                     post.Likes = 0;
                     post.Hearts = 0;
                     context.Posts.Add(post);
-                    context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                     return post;
         }
 
-        public List<Post> GetAll()
+        public async Task<List<Post>> GetAll()
         {
             
-                return context.Posts.ToList();
+                return await context.Posts.ToListAsync();
            
         }
 
-        public Post GetById(int id)
+        public async Task<Post> GetById(int id)
         {
                 try
                 {
-                    return context.Posts.First(x => x.PostId == id);
+                    return await context.Posts.FirstAsync(x => x.PostId == id);
 
                 }
                 catch (Exception ex)
@@ -47,17 +48,17 @@ namespace PostApp.Repository
            
         }
 
-        public Post Update(int id, Post post)
+        public async Task<Post> Update(int id, Post post)
         {
             
                 try
                 {
-                    var update = context.Posts.First(x => x.PostId == id);
+                    var update = await context.Posts.FirstAsync(x => x.PostId == id);
                     update.PostName = post.PostName;
                     update.PostDescription = post.PostDescription;
                     update.UpdatedDate = DateTime.Now;
-                    context.SaveChanges();
-                    return context.Posts.First(x => x.PostId == id);
+                    await context.SaveChangesAsync();
+                    return await context.Posts.FirstAsync(x => x.PostId == id);
                 }
                 catch (Exception ex)
                 {
@@ -66,25 +67,25 @@ namespace PostApp.Repository
             
         }
 
-        public int UpdateLikeHeart(int id, string option)
+        public async Task<int> UpdateLikeHeart(int id, string option)
         {
            
                 try
                 {
 
-                    var update = context.Posts.First(x => x.PostId == id);
+                    var update = await context.Posts.FirstAsync (x => x.PostId == id);
                     if (option == "like" || option == "heart")
                     {
                         if (option == "like")
                         {
                             update.Likes++;
-                            context.SaveChanges();
+                            await context.SaveChangesAsync();
                             return (int)update.Likes;
                         }
                         else
                         {
                             update.Hearts++;
-                            context.SaveChanges();
+                            await context.SaveChangesAsync();
                             return (int)update.Hearts;
                         }
                     }
@@ -95,13 +96,13 @@ namespace PostApp.Repository
                             if (update.Likes > 0)
                             {
                                 update.Likes--;
-                                context.SaveChanges();
+                                await context.SaveChangesAsync();
                                 return (int)update.Likes;
                             }
                             else
                             {
                                 update.Likes = 0;
-                                context.SaveChanges();
+                                await context.SaveChangesAsync();
                                 return (int)update.Likes;
                             }
                         }
@@ -110,13 +111,13 @@ namespace PostApp.Repository
                             if (update.Hearts > 0)
                             {
                                 update.Hearts--;
-                                context.SaveChanges();
+                                await context.SaveChangesAsync();
                                 return (int)update.Hearts;
                             }
                             else
                             {
                                 update.Hearts = 0;
-                                context.SaveChanges();
+                                await context.SaveChangesAsync();
                                 return (int)update.Hearts;
                             }
                         }

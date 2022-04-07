@@ -8,13 +8,13 @@ namespace PostApp.Repository
 {
    public interface IPostRepository
     {
-        List<Post> GetAll();
-        Post GetById(int id);
+        Task<List<Post>> GetAll();
+        Task<Post> GetById(int id);
 
-        Post Insert(Post post);
+         Task<Post> Insert(Post post);
 
-        Post Update(int id, Post post);
+        Task<Post> Update(int id, Post post);
 
-        int UpdateLikeHeart(int id, string option);
+        Task<int> UpdateLikeHeart(int id, string option);
     }
 }

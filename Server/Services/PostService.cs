@@ -18,7 +18,7 @@ namespace PostApp.Services
         {
             try
             {
-                return Task.FromResult(_postRepository.Insert(post));
+                return _postRepository.Insert(post);
             }
             catch(Exception ex)
             {
@@ -30,7 +30,7 @@ namespace PostApp.Services
         {
             try
             {
-                return Task.FromResult(_postRepository.GetAll());
+                return _postRepository.GetAll();
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace PostApp.Services
         {
             try
             {
-                return Task.FromResult(_postRepository.GetById(id));
+                return _postRepository.GetById(id);
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace PostApp.Services
         {
             try
             {
-                return Task.FromResult(_postRepository.Update(id, post));
+                return _postRepository.Update(id, post);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace PostApp.Services
         {
             try
             {
-                return Task.FromResult(_postRepository.UpdateLikeHeart(id, option));
+                return _postRepository.UpdateLikeHeart(id, option);
             }
             catch (Exception ex)
             {

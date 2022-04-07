@@ -8,10 +8,10 @@ namespace PostApp.Repository
 {
    public interface ICommentRepository
     {
-        List<Comment> GetByPostId(int id);
-        Comment GetByCommentId(int id);
+        Task<List<Comment>> GetByPostId(int id);
+        Task<Comment> GetByCommentId(int id);
 
-        Comment Insert(Comment comment);
-        Comment Update(int id, Comment comment);
+        Task<Comment> Insert(Comment comment);
+        Task<Comment> Update(int id, Comment comment);
     }
 }

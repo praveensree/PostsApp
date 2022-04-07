@@ -1,4 +1,5 @@
-﻿using PostApp.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,14 @@ namespace PostApp.Repository
         {
             this.context = context;
         }
-        public Comment Insert(Comment comment)
+        public async Task<Comment> Insert(Comment comment)
         {
             try
             {
                     comment.CreatedDate = DateTime.Now;
                     comment.UpdatedDate = null;
-                    context.Comments.Add(comment);
-                    context.SaveChangesAsync();
+                    await context.Comments.AddAsync(comment);
+                    await context.SaveChangesAsync();
                     return comment;
                
             }
@@ -31,12 +32,12 @@ namespace PostApp.Repository
             }
         }
 
-        public Comment GetByCommentId(int id)
+        public async Task<Comment> GetByCommentId(int id)
         {
             try
             {
 
-                    var Comment = context.Comments.Where(s => s.CommentId == id).First();
+                    var Comment = await context.Comments.Where(s => s.CommentId == id).FirstAsync();
                     return Comment;
             }
             catch (Exception ex)
@@ -45,11 +46,11 @@ namespace PostApp.Repository
             }
         }
 
-        public List<Comment> GetByPostId(int id)
+        public async Task<List<Comment>> GetByPostId(int id)
         {
             try
             {
-                    var CommentList = context.Comments.Where(s => s.PostId == id).ToList();
+                    var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
                     return CommentList;
             }
             catch (Exception ex)
@@ -58,16 +59,16 @@ namespace PostApp.Repository
             }
         }
 
-        public Comment Update(int id, Comment comment)
+        public async Task<Comment> Update(int id, Comment comment)
         {
             try
             {
-                    var update = context.Comments.First(x => x.CommentId == id);
+                    var update = await context.Comments.FirstAsync(x => x.CommentId == id);
 
                     update.CommentDetail = comment.CommentDetail;
                     update.UpdatedDate = DateTime.Now;
-                    context.SaveChanges();
-                    return context.Comments.First(x => x.CommentId == id);
+                    await context.SaveChangesAsync();
+                    return await context.Comments.FirstAsync(x => x.CommentId == id);
                 
             }
             catch (Exception ex)
