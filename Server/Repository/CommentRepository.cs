@@ -38,9 +38,9 @@ namespace PostApp.Repository
                 var Comment = await context.Comments.Where(s => s.CommentId == id).FirstAsync();
                 return Comment;
             }
-            catch (Exception ex)
-            {
-                throw ex;
+            catch (Exception) 
+            { 
+                throw new Exception("Invalid Comment Id"); 
             }
         }
 
@@ -51,9 +51,9 @@ namespace PostApp.Repository
                 var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
                 return CommentList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new Exception("Invalid PostId");
             }
         }
 
@@ -69,7 +69,7 @@ namespace PostApp.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Cannot update , please check the details");
             }
         }
     }

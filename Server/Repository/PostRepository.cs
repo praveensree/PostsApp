@@ -37,9 +37,9 @@ namespace PostApp.Repository
             {
                 return await context.Posts.FirstAsync(x => x.PostId == id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new Exception("Invalid Id");
             }
         }
 
@@ -54,9 +54,9 @@ namespace PostApp.Repository
                 await context.SaveChangesAsync();
                 return await context.Posts.FirstAsync(x => x.PostId == id);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw new Exception("Please Enter a valid Id");
             }
         }
 
