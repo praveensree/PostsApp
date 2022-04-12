@@ -9,15 +9,15 @@ namespace PostApp.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        private readonly fbContext context;
-        public CommentRepository(fbContext context)
+        private readonly PostAppContext context;
+        public CommentRepository(PostAppContext context)
         {
             this.context = context;
         }
 
         public async Task<Comment> Insert(Comment comment)
         {
-            try
+            if (string.IsNullOrWhiteSpace(comment.CommentDetail))
             {
                 comment.CreatedDate = DateTime.Now;
                 comment.UpdatedDate = null;
@@ -25,51 +25,61 @@ namespace PostApp.Repository
                 await context.SaveChangesAsync();
                 return comment;
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                throw new ArgumentException(nameof(comment.CommentDetail));
             }
         }
 
         public async Task<Comment> GetByCommentId(int id)
         {
-            try
+
+            var Comment = await context.Comments.Where(s => s.CommentId == id).FirstOrDefaultAsync();
+            if (Comment != null)
             {
-                var Comment = await context.Comments.Where(s => s.CommentId == id).FirstAsync();
                 return Comment;
             }
-            catch (Exception) 
-            { 
-                throw new Exception("Invalid Comment Id"); 
+            else
+            {
+                throw new ArgumentException(nameof(id));
             }
         }
 
         public async Task<List<Comment>> GetByPostId(int id)
         {
-            try
+
+            var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
+            if (CommentList != null)
             {
-                var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
                 return CommentList;
             }
-            catch (Exception)
+            else
             {
-                throw new Exception("Invalid PostId");
+                throw new ArgumentException(nameof(id));
             }
         }
 
         public async Task<Comment> Update(int id, Comment comment)
         {
-            try
+            var Update = await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id);
+            if (Update != null)
             {
-                var update = await context.Comments.FirstAsync(x => x.CommentId == id);
-                update.CommentDetail = comment.CommentDetail;
-                update.UpdatedDate = DateTime.Now;
-                await context.SaveChangesAsync();
-                return await context.Comments.FirstAsync(x => x.CommentId == id);
+
+                if (string.IsNullOrWhiteSpace(comment.CommentDetail))
+                {
+                    throw new ArgumentException(nameof(comment.CommentDetail));
+                }
+                else
+                {
+                    Update.CommentDetail = comment.CommentDetail;
+                    Update.UpdatedDate = DateTime.Now;
+                    await context.SaveChangesAsync();
+                    return await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception("Cannot update , please check the details");
+                throw new ArgumentException(nameof(comment.CommentId));
             }
         }
     }

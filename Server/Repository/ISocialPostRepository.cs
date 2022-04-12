@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PostApp.Repository
 {
-    public interface IPostRepository
+    public interface ISocialPostRepository
     {
         Task<List<Post>> GetAll();
         Task<Post> GetById(int id);

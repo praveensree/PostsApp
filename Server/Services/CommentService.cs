@@ -15,11 +15,11 @@ namespace PostApp.Services
             _commentRepository = commentRepository;
         }
 
-        public Task<Comment> CreateComment(Comment comment)
+        public async Task<Comment> CreateComment(Comment comment)
         {
             try
             {
-                return _commentRepository.Insert(comment);
+                return await _commentRepository.Insert(comment);
             }
             catch (Exception ex)
             {
@@ -27,11 +27,11 @@ namespace PostApp.Services
             }
         }
 
-        public Task<Comment> GetCommentByCommentId(int id)
+        public async Task<Comment> GetCommentByCommentId(int id)
         {
             try
             {
-                return _commentRepository.GetByCommentId(id);
+                return await _commentRepository.GetByCommentId(id);
             }
             catch (Exception ex)
             {
@@ -39,11 +39,11 @@ namespace PostApp.Services
             }
         }
 
-        public Task<List<Comment>> GetCommentsByPostId(int id)
+        public async Task<List<Comment>> GetCommentsByPostId(int id)
         {
             try
             {
-                return _commentRepository.GetByPostId(id);
+                return await _commentRepository.GetByPostId(id);
             }
             catch (Exception ex)
             {
@@ -51,16 +51,13 @@ namespace PostApp.Services
             }
         }
 
-        public Task<Comment> UpdateCommentById(int id, Comment comment)
+        public async Task<Comment> UpdateCommentById(int id, Comment comment)
         {
             try
             {
-                return _commentRepository.Update(id, comment);
+                return await _commentRepository.Update(id, comment);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw ex; }
         }
     }
 }

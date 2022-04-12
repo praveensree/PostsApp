@@ -9,16 +9,16 @@ namespace PostApp.Services
 {
     public class PostService : IPostService
     {
-        private readonly IPostRepository _postRepository;
-        public PostService(IPostRepository postRepository)
+        private readonly ISocialPostRepository _postRepository;
+        public PostService(ISocialPostRepository postRepository)
         {
             _postRepository = postRepository;
         }
-        public Task<Post> CreateSocialPost(Post post)
+        public async Task<Post> CreateSocialPost(Post post)
         {
             try
             {
-                return _postRepository.Insert(post);
+                return await _postRepository.Insert(post);
             }
             catch (Exception ex)
             {
@@ -26,11 +26,11 @@ namespace PostApp.Services
             }
         }
 
-        public Task<List<Post>> GetSocialPost()
+        public async Task<List<Post>> GetSocialPost()
         {
             try
             {
-                return _postRepository.GetAll();
+                return await _postRepository.GetAll();
             }
             catch (Exception ex)
             {
@@ -38,40 +38,31 @@ namespace PostApp.Services
             }
         }
 
-        public Task<Post> GetSocialPostById(int id)
+        public async Task<Post> GetSocialPostById(int id)
         {
             try
             {
-                return _postRepository.GetById(id);
+                return await _postRepository.GetById(id);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw ex; }
         }
 
-        public Task<Post> UpdateSocialPost(int id, Post post)
+        public async Task<Post> UpdateSocialPost(int id, Post post)
         {
             try
             {
-                return _postRepository.Update(id, post);
+                return await _postRepository.Update(id, post);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw ex; }
         }
 
-        public Task<int> UpdateSocialPostLikeHeart(int id, string option)
+        public async Task<int> UpdateSocialPostLikeHeart(int id, string option)
         {
             try
             {
-                return _postRepository.UpdateLikeHeart(id, option);
+                return await _postRepository.UpdateLikeHeart(id, option);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw ex; }
         }
     }
 }
