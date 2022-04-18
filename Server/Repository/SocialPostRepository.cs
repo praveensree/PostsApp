@@ -72,19 +72,19 @@ namespace PostApp.Repository
             {
                 if (string.IsNullOrWhiteSpace(post.PostDescription))
                 {
-                    throw new ArgumentException(nameof(post.PostDescription));
+                    throw new ArgumentException(nameof(post.PostDescription),"post Description Must");
                 }
                 else if (string.IsNullOrWhiteSpace(post.PostName))
                 {
-                    throw new ArgumentException(nameof(post.PostName));
+                    throw new ArgumentException(nameof(post.PostName),"Post Name Must");
                 }
                 else
                 {
                     Update.PostName = post.PostName;
                     Update.PostDescription = post.PostDescription;
                     Update.UpdatedDate = DateTime.Now;
-                    await context.SaveChangesAsync();
-                    return await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+                    var Po = await context.SaveChangesAsync() > 0;
+                    return Po? await context.Posts.FirstOrDefaultAsync(x => x.PostId == id): throw new Exception("unable to process");
                 }
             }
             else
@@ -104,14 +104,14 @@ namespace PostApp.Repository
                     if (option == "like")
                     {
                         UpdateLikeorHeart.Likes++;
-                        await context.SaveChangesAsync();
-                        return (int)UpdateLikeorHeart.Likes;
+                        var Po = await context.SaveChangesAsync() > 0;
+                        return Po? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
                     }
                     else
                     {
                         UpdateLikeorHeart.Hearts++;
-                        await context.SaveChangesAsync();
-                        return (int)UpdateLikeorHeart.Hearts;
+                        var Po = await context.SaveChangesAsync() > 0;
+                        return Po? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
                     }
                 }
                 else if (option == "unlike" || option == "disheart")
@@ -121,14 +121,14 @@ namespace PostApp.Repository
                         if (UpdateLikeorHeart.Likes > 0)
                         {
                             UpdateLikeorHeart.Likes--;
-                            await context.SaveChangesAsync();
-                            return (int)UpdateLikeorHeart.Likes;
+                            var Po = await context.SaveChangesAsync() > 0;
+                            return Po ? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
                         }
                         else
                         {
                             UpdateLikeorHeart.Likes = 0;
-                            await context.SaveChangesAsync();
-                            return (int)UpdateLikeorHeart.Likes;
+                            var Po = await context.SaveChangesAsync() > 0;
+                            return Po ? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
                         }
                     }
                     else
@@ -136,20 +136,20 @@ namespace PostApp.Repository
                         if (UpdateLikeorHeart.Hearts > 0)
                         {
                             UpdateLikeorHeart.Hearts--;
-                            await context.SaveChangesAsync();
-                            return (int)UpdateLikeorHeart.Hearts;
+                            var Po = await context.SaveChangesAsync() > 0;
+                            return Po ? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
                         }
                         else
                         {
                             UpdateLikeorHeart.Hearts = 0;
-                            await context.SaveChangesAsync();
-                            return (int)UpdateLikeorHeart.Hearts;
+                            var Po = await context.SaveChangesAsync() > 0;
+                            return Po ? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
                         }
                     }
                 }
                 else
                 {
-                    throw new ArgumentException(nameof(option),"option is invalid please use like or unlike");
+                    throw new ArgumentException(nameof(option),"option is invalid please use like or heart");
                 }
             }
             else

@@ -86,8 +86,8 @@ namespace PostApp.Repository
                 {
                     Update.CommentDetail = comment.CommentDetail;
                     Update.UpdatedDate = DateTime.Now;
-                    await context.SaveChangesAsync();
-                    return await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id);
+                    var Po =await context.SaveChangesAsync()>0;
+                    return Po ?  await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id): throw new Exception("Unable to process");
                 }
             }
             else
