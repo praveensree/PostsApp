@@ -20,11 +20,11 @@ namespace PostApp.Repository
 
             if (string.IsNullOrWhiteSpace(post.PostDescription))
             {
-                throw new ArgumentException(nameof(post.PostDescription));
+                throw new ArgumentException(nameof(post.PostDescription), "Please enter the Description");
             }
             else if (string.IsNullOrWhiteSpace(post.PostName))
             {
-                throw new ArgumentException(nameof(post.PostName));
+                throw new ArgumentException(nameof(post.PostName),"Please enter the PostName");
             }
             else
             {
@@ -33,21 +33,21 @@ namespace PostApp.Repository
                 post.Likes = 0;
                 post.Hearts = 0;
                 context.Posts.Add(post);
-                await context.SaveChangesAsync();
-                return post;
+                var Po = await context.SaveChangesAsync()>0;
+                return Po ? post : throw new Exception("Unable to process the request");
             }
         }
 
         public async Task<List<Post>> GetAll()
         {
             var PostList = await context.Posts.ToListAsync();
-            if (PostList != null)
+            if (PostList.Count>0)
             {
                 return PostList;
             }
             else
             {
-                throw new Exception("No Records");
+                throw new Exception("No Records Found");
             }
         }
 
@@ -60,7 +60,7 @@ namespace PostApp.Repository
             }
             else
             {
-                throw new ArgumentException(nameof(id));
+                throw new ArgumentException(nameof(id), "Invalid Id");
             }
         }
 
@@ -70,7 +70,6 @@ namespace PostApp.Repository
             var Update = await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
             if (Update != null)
             {
-
                 if (string.IsNullOrWhiteSpace(post.PostDescription))
                 {
                     throw new ArgumentException(nameof(post.PostDescription));
@@ -150,12 +149,12 @@ namespace PostApp.Repository
                 }
                 else
                 {
-                    throw new ArgumentException(nameof(option));
+                    throw new ArgumentException(nameof(option),"option is invalid please use like or unlike");
                 }
             }
             else
             {
-                throw new ArgumentException(nameof(id));
+                throw new ArgumentException(nameof(id),"Invalid Id");
             }
         }
 

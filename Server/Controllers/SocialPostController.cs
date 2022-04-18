@@ -57,15 +57,8 @@ namespace Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
-            if (post != null && post.PostDescription != "" && post.PostName != "")
-            {
                 var response = await _postService.UpdateSocialPost(id, post);
                 return Ok(response);
-            }
-            else
-            {
-                return BadRequest("please write about Post");
-            }
         }
 
         //put api/SocialPost/LikesandHearts/1014/unlike
@@ -75,6 +68,5 @@ namespace Server.Controllers
             var response = await _postService.UpdateSocialPostLikeHeart(id, option);
             return Ok(response);
         }
-
     }
 }

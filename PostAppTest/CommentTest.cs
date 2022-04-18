@@ -44,8 +44,8 @@ namespace PostAppTest
             .Returns(testFixture.GetTestCommentById());
             var controller = new CommentsController(mockService.Object);
             var result = await controller.GetCommentByCommentId(1) as OkObjectResult;
-            var actualResponse = result.Value as List<Comment>;
-            Assert.True(actualResponse.Count > 0);
+            var actualResponse = result.Value as Comment;
+            Assert.True(actualResponse!=null);
             Assert.Equal(Convert.ToInt16(HttpStatusCode.OK), result.StatusCode);
             Assert.True(result.Value.GetType() == typeof(Comment));
         }
