@@ -63,7 +63,7 @@ namespace PostApp.Repository
         public async Task<List<Comment>> GetByPostId(int id)
         {
             var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
-            if (CommentList.Count()>0)
+            if (context.Posts.Any(o => o.PostId == id))
             {
                 return CommentList;
             }
