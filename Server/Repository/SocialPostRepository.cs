@@ -53,7 +53,7 @@ namespace PostApp.Repository
 
         public async Task<Post> GetById(int id)
         {
-            var Post = await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+            var Post = await context.Posts.SingleOrDefaultAsync(x => x.PostId == id);
             if (Post != null)
             {
                 return Post;

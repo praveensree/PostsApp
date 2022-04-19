@@ -49,7 +49,7 @@ namespace PostApp.Repository
 
         public async Task<Comment> GetByCommentId(int id)
         {
-            var Comment = await context.Comments.Where(s => s.CommentId == id).FirstOrDefaultAsync();
+            var Comment = await context.Comments.Where(s => s.CommentId == id).SingleOrDefaultAsync();
             if (Comment != null)
             {
                 return Comment;

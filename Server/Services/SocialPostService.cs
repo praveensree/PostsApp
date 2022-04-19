@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PostApp.Services
 {
-    public class PostService : IPostService
+    public class SocialPostService : ISocialPostService
     {
         private readonly ISocialPostRepository _postRepository;
-        public PostService(ISocialPostRepository postRepository)
+        public SocialPostService(ISocialPostRepository postRepository)
         {
             _postRepository = postRepository;
         }

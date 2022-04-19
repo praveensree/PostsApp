@@ -30,7 +30,7 @@ namespace PostApp
         {
             services.AddControllers();
             services.AddScoped<ISocialPostRepository, SocialPostRepository>();
-            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ISocialPostService, SocialPostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddDbContext<PostAppContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));

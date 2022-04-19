@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PostApp.Services
 {
-    public interface IPostService
+    public interface ISocialPostService
     {
         Task<List<Post>> GetSocialPost();
         Task<Post> GetSocialPostById(int id);

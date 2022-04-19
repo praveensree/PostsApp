@@ -16,8 +16,8 @@ namespace Server.Controllers
     [ApiController]
     public class SocialPostController : ControllerBase
     {
-        private readonly IPostService _postService;
-        public SocialPostController(IPostService postService)
+        private readonly ISocialPostService _postService;
+        public SocialPostController(ISocialPostService postService)
         {
             _postService = postService;
         }

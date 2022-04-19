@@ -25,7 +25,7 @@ namespace SocialPostsTest
         public async Task GetAllSocialPost_Returns_All_postsAsync()
         {
             // Arrange
-            var mockService = new Mock<IPostService>();
+            var mockService = new Mock<ISocialPostService>();
             mockService.Setup(repo => repo.GetSocialPost())
             .Returns(testFixture.GetTestPostList());
             var controller = new SocialPostController(mockService.Object);
@@ -38,7 +38,7 @@ namespace SocialPostsTest
         [Fact]
         public async Task GetSocialPostById_Returns_PostAsync()
         {
-            var mockService = new Mock<IPostService>();
+            var mockService = new Mock<ISocialPostService>();
             mockService.Setup(repo => repo.GetSocialPostById(1))
             .Returns(testFixture.GetTestPost());
             var controller = new SocialPostController(mockService.Object);
@@ -52,7 +52,7 @@ namespace SocialPostsTest
         [Fact]
         public async Task UpdateSocialPost_Returns_PostAsync()
         {
-            var mockService = new Mock<IPostService>();
+            var mockService = new Mock<ISocialPostService>();
             mockService.Setup(repo => repo.UpdateSocialPost(It.IsAny<int>(), It.IsAny<Post>()))
             .Returns(testFixture.GetTestPost());
             var controller = new SocialPostController(mockService.Object);
@@ -66,7 +66,7 @@ namespace SocialPostsTest
         [Fact]
         public async Task UpdateSocialPostLike_returns_intAsync()
         {
-            var mockService = new Mock<IPostService>();
+            var mockService = new Mock<ISocialPostService>();
             mockService.Setup(repo => repo.UpdateSocialPostLikeHeart(1, "like"))
             .Returns(Task.FromResult(2));
             var controller = new SocialPostController(mockService.Object);
@@ -79,7 +79,7 @@ namespace SocialPostsTest
         public async Task CreateSocialPost_Returns_PostAsync()
         {
             // Arrange
-            var mockService = new Mock<IPostService>();
+            var mockService = new Mock<ISocialPostService>();
             mockService.Setup(repo => repo.CreateSocialPost(It.IsAny<Post>()))
             .Returns(testFixture.GetTestPost());
             var controller = new SocialPostController(mockService.Object);
