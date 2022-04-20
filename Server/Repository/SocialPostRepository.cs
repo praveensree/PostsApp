@@ -18,13 +18,9 @@ namespace PostApp.Repository
         public async Task<Post> Insert(Post post)
         {
 
-            if (string.IsNullOrWhiteSpace(post.PostDescription))
+            if (string.IsNullOrWhiteSpace(post.PostDescription) || string.IsNullOrWhiteSpace(post.PostName))
             {
-                throw new ArgumentException(nameof(post.PostDescription), "Please enter the Description");
-            }
-            else if (string.IsNullOrWhiteSpace(post.PostName))
-            {
-                throw new ArgumentException(nameof(post.PostName),"Please enter the PostName");
+                return post;
             }
             else
             {
@@ -41,27 +37,13 @@ namespace PostApp.Repository
         public async Task<List<Post>> GetAll()
         {
             var PostList = await context.Posts.ToListAsync();
-            if (PostList.Count>0)
-            {
                 return PostList;
-            }
-            else
-            {
-                throw new Exception("No Records Found");
-            }
         }
 
         public async Task<Post> GetById(int id)
         {
             var Post = await context.Posts.SingleOrDefaultAsync(x => x.PostId == id);
-            if (Post != null)
-            {
-                return Post;
-            }
-            else
-            {
-                throw new ArgumentException(nameof(id), "Invalid Id");
-            }
+            return Post;  
         }
 
         public async Task<Post> Update(int id, Post post)
@@ -70,13 +52,9 @@ namespace PostApp.Repository
             var Update = await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
             if (Update != null)
             {
-                if (string.IsNullOrWhiteSpace(post.PostDescription))
+                if (string.IsNullOrWhiteSpace(post.PostDescription) || (string.IsNullOrWhiteSpace(post.PostName)))
                 {
-                    throw new ArgumentException(nameof(post.PostDescription),"post Description Must");
-                }
-                else if (string.IsNullOrWhiteSpace(post.PostName))
-                {
-                    throw new ArgumentException(nameof(post.PostName),"Post Name Must");
+                    return post;
                 }
                 else
                 {
@@ -149,12 +127,12 @@ namespace PostApp.Repository
                 }
                 else
                 {
-                    throw new ArgumentException(nameof(option),"option is invalid please use like or heart");
+                    return -1;
                 }
             }
             else
             {
-                throw new ArgumentException(nameof(id),"Invalid Id");
+                return -2;
             }
         }
 

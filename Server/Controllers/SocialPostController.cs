@@ -27,6 +27,10 @@ namespace Server.Controllers
         public async Task<IActionResult> GetSocialPost()
         {
             var response = await _postService.GetSocialPost();
+            if (response == null)
+            {
+                return NotFound();
+            }
             return Ok(response);
         }
 
@@ -35,6 +39,10 @@ namespace Server.Controllers
         public async Task<IActionResult> GetSocialPostById(int id)
         {
             var response = await _postService.GetSocialPostById(id);
+            if (response == null)
+            {
+                return NotFound("Invalid Id");
+            }
             return Ok(response);
         }
 
@@ -42,22 +50,31 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSocialPost([FromBody] Post post)
         {
-            if (post != null && post.PostDescription != "" && post.PostName != "" && post.PostDescription != null && post.PostName != null)
+            var response = await _postService.CreateSocialPost(post);
+            if (string.IsNullOrWhiteSpace(response.PostName))
             {
-                var response = await _postService.CreateSocialPost(post);
-                return Ok(response);
+                return BadRequest("PostName is required");
             }
-            else
+            else if (string.IsNullOrWhiteSpace(response.PostDescription))
             {
-                return BadRequest("please write about Post");
+                return BadRequest("PostDescription is required");
             }
+            return Ok(response);
         }
 
         // PUT api/SocialPost/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
-                var response = await _postService.UpdateSocialPost(id, post);
+            var response = await _postService.UpdateSocialPost(id, post);
+            if (string.IsNullOrWhiteSpace(response.PostDescription)) 
+            {
+                return BadRequest("PostDescription Required");
+            }
+            else if (string.IsNullOrWhiteSpace(response.PostName))
+            {
+                return BadRequest("PostName Required");
+            }
                 return Ok(response);
         }
 
@@ -66,6 +83,14 @@ namespace Server.Controllers
         public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
             var response = await _postService.UpdateSocialPostLikeHeart(id, option);
+            if (response == -1)
+            { 
+                return NotFound("Invalid Option");
+            }
+            else if (response == -2)
+            {
+                return NotFound("Invalid Id");
+            }
             return Ok(response);
         }
     }

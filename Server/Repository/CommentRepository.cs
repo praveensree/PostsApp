@@ -18,17 +18,9 @@ namespace PostApp.Repository
 
         public async Task<Comment> Insert(Comment comment)
         {
-           
-            if (string.IsNullOrWhiteSpace(comment.CommentDetail)|| comment.PostId ==null)
+            if (string.IsNullOrWhiteSpace(comment.CommentDetail) || comment.PostId == null)
             {
-                if ((string.IsNullOrWhiteSpace(comment.CommentDetail)))
-                {
-                    throw new ArgumentException(nameof(comment.CommentDetail), "Comment Details cannot be null");
-                }
-                else
-                {
-                    throw new ArgumentException(nameof(comment.PostId), "Id cannot be null");
-                }
+                return comment;
             }
             else
             {
@@ -42,7 +34,8 @@ namespace PostApp.Repository
                 }
                 else
                 {
-                    throw new Exception("Id does not exist");
+                    comment.CommentId = -1;
+                    return comment;
                 }
             }
         }
@@ -50,14 +43,7 @@ namespace PostApp.Repository
         public async Task<Comment> GetByCommentId(int id)
         {
             var Comment = await context.Comments.Where(s => s.CommentId == id).SingleOrDefaultAsync();
-            if (Comment != null)
-            {
-                return Comment;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Id", nameof(id));
-            }
+            return Comment;
         }
 
         public async Task<List<Comment>> GetByPostId(int id)
@@ -69,7 +55,7 @@ namespace PostApp.Repository
             }
             else
             {
-                throw new ArgumentException("Invalid Id", nameof(id));
+                return CommentList;
             }
         }
 
@@ -80,19 +66,20 @@ namespace PostApp.Repository
             {
                 if (string.IsNullOrWhiteSpace(comment.CommentDetail))
                 {
-                    throw new ArgumentException(nameof(comment.CommentDetail));
+                    return comment;
                 }
                 else
                 {
                     Update.CommentDetail = comment.CommentDetail;
                     Update.UpdatedDate = DateTime.Now;
-                    var Po =await context.SaveChangesAsync()>0;
-                    return Po ?  await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id): throw new Exception("Unable to process");
+                    var Po = await context.SaveChangesAsync() > 0;
+                    return Po ? await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id) : throw new Exception("Unable to process");
                 }
             }
             else
             {
-                throw new ArgumentException("Invalid Id", nameof(comment.CommentId));
+                comment.CommentId = -1;
+                return comment;
             }
         }
     }
