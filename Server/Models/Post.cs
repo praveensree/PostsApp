@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,7 @@ namespace PostApp.Models
         public int? Likes { get; set; }
         public int? Hearts { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<Comment> Comments { get; set; }
     }
 }
