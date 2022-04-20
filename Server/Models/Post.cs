@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
-namespace Server.Models
+namespace PostApp.Models
 {
     public partial class Post
     {
@@ -20,6 +22,7 @@ namespace Server.Models
         public int? Likes { get; set; }
         public int? Hearts { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Server.Models;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Server.Repository;
-using Server.Services;
+using PostApp.Repository;
+using PostApp.Services;
 
 namespace Server.Controllers
 {
@@ -20,61 +20,79 @@ namespace Server.Controllers
             _commentService = commentService;
         }
 
+        //GET api/Comments/1014
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCommentsByPostId(int id)
         {
-            try
+            var response = await _commentService.GetCommentsByPostId(id);
+            if (response.Count > 0)
             {
-                var response = await _commentService.GetCommentsByPostId(id);
                 return Ok(response);
             }
-            catch (Exception)
+            else
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return NotFound("Invalid Id");
             }
         }
 
+        //GET api/Comments/CommentbyId/1014
         [HttpGet("CommentbyId/{id}")]
         public async Task<IActionResult> GetCommentByCommentId(int id)
         {
-            try
+            var response = await _commentService.GetCommentByCommentId(id);
+            if (response != null)
             {
-                var response = await _commentService.GetCommentByCommentId(id);
                 return Ok(response);
             }
-            catch (Exception)
+            else
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return NotFound("Invalid Id");
             }
         }
+
+        //POST api/Comments
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
-            try
+            var response = await _commentService.CreateComment(comment);
+            if (response.CommentId < 0)
             {
-                var response = await _commentService.CreateComment(comment);
-                return Ok(response);
+                if (response.CommentId == -1)
+                {
+                    return NotFound("Invalid Id");
+                }
+                return NotFound("unable to process");
             }
-            catch (Exception)
+            else if (string.IsNullOrWhiteSpace(response.CommentDetail))
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return BadRequest("commentDetail Required");
             }
+            else if (response.PostId == null)
+            {
+                return BadRequest("PostId Required");
+            }
+            return Ok(response);
         }
 
+        //PUT api/Comments/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCommentById(int id, [FromBody] Comment comment)
         {
-            try
+            var response = await _commentService.UpdateCommentById(id, comment);
+            if (string.IsNullOrWhiteSpace(response.CommentDetail))
             {
-                var response = await _commentService.UpdateCommentById(id, comment);
-                return Ok(response);
+                return BadRequest("Commentdetail Required");
             }
-            catch (Exception)
+            else if (response.CommentId < 0)
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                if (response.CommentId == -1)
+                {
+                    return NotFound("Invalid Id");
+                }
+                return NotFound("unable to process");
             }
-            }
-}
-
+            return Ok(response);
+        }
+    }
 }
 

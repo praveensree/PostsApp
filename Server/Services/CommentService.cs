@@ -1,11 +1,11 @@
-﻿using Server.Models;
-using Server.Repository;
+﻿using PostApp.Models;
+using PostApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Services
+namespace PostApp.Services
 {
     public class CommentService:ICommentService
     {
@@ -15,28 +15,23 @@ namespace Server.Services
             _commentRepository = commentRepository;
         }
 
-        public Task<Comment> CreateComment(Comment comment)
+        public async Task<Comment> CreateComment(Comment comment)
         {
-            return Task.FromResult(_commentRepository.Insert(comment));
-
+                return await _commentRepository.Insert(comment);
         }
 
-        public Task<Comment> GetCommentByCommentId(int id)
+        public async Task<Comment> GetCommentByCommentId(int id)
         {
-            return Task.FromResult(_commentRepository.GetByCommentId(id));
-
+                return await _commentRepository.GetByCommentId(id);   
         }
 
-        public Task<List<Comment>> GetCommentsByPostId(int id)
+        public async Task<List<Comment>> GetCommentsByPostId(int id)
         {
-            return Task.FromResult(_commentRepository.GetByPostId(id));
+                return await _commentRepository.GetByPostId(id);        }
 
-        }
-
-        public Task<Comment> UpdateCommentById(int id, Comment comment)
+        public async Task<Comment> UpdateCommentById(int id, Comment comment)
         {
-            return Task.FromResult(_commentRepository.Update(id, comment));
-
+                return await _commentRepository.Update(id, comment);
         }
     }
 }

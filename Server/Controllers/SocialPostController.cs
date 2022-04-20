@@ -1,4 +1,4 @@
-﻿using Server.Models;
+﻿using PostApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,8 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Server.Repository;
-using Server.Services;
+using PostApp.Repository;
+using PostApp.Services;
 
 namespace Server.Controllers
 {
@@ -16,93 +16,98 @@ namespace Server.Controllers
     [ApiController]
     public class SocialPostController : ControllerBase
     {
-        private readonly IPostService _postService;
-        public SocialPostController( IPostService postService)
+        private readonly ISocialPostService _postService;
+        public SocialPostController(ISocialPostService postService)
         {
             _postService = postService;
         }
-        // GET: api/SocialPost
+
+        // GET api/SocialPost
         [HttpGet]
         public async Task<IActionResult> GetSocialPost()
         {
-            //TODO: Have to write logic here
-            try
+            var response = await _postService.GetSocialPost();
+            if (response == null)
             {
-                var response = await _postService.GetSocialPost();
-                return Ok(response);
+                return NotFound();
             }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
+            return Ok(response);
         }
 
-        // GET api/SocialPost/5
+        // GET api/SocialPost/1014
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSocialPostById(int id)
         {
-            try
+            var response = await _postService.GetSocialPostById(id);
+            if (response == null)
             {
-                var response = await _postService.GetSocialPostById(id);
-                return Ok(response);
+                return NotFound("Invalid Id");
             }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
+            return Ok(response);
         }
 
         // POST api/SocialPost
         [HttpPost]
         public async Task<IActionResult> CreateSocialPost([FromBody] Post post)
         {
-            try
+            var response = await _postService.CreateSocialPost(post);
+            if (string.IsNullOrWhiteSpace(response.PostName))
             {
-                var response = await _postService.CreateSocialPost(post);
-                return Ok(response);
+                return BadRequest("PostName is required");
             }
-            catch (Exception)
+            else if (string.IsNullOrWhiteSpace(response.PostDescription))
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return BadRequest("PostDescription is required");
             }
+            else if(response.PostId==-1)
+            {
+                return NotFound("PostDescription is required");
+            }
+            return Ok(response);
         }
 
-
+        // PUT api/SocialPost/1014
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSocialPost(int id, [FromBody] Post post)
         {
-            try
+            var response = await _postService.UpdateSocialPost(id, post);
+            if (string.IsNullOrWhiteSpace(response.PostDescription)) 
             {
-                var response = await _postService.UpdateSocialPost(id, post);
-                return Ok(response);
+                return BadRequest("PostDescription Required");
             }
-            catch (Exception)
+            else if (string.IsNullOrWhiteSpace(response.PostName))
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return BadRequest("PostName Required");
             }
+            else if(response.PostId==-1)
+            {
+                return NotFound("Invalid Post Id");
+            }
+            else if (response.PostId == -2)
+            {
+                return NotFound("unable to Process");
+            }
+            return Ok(response);
         }
 
+        //put api/SocialPost/LikesandHearts/1014/unlike
         [HttpPut("LikesandHearts/{option}/{id}")]
         public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
-            try
+            var response = await _postService.UpdateSocialPostLikeHeart(id, option);
+            if (response < 0)
             {
-
-                var response = await _postService.UpdateSocialPostLikeHeart(id, option);
-                if (response >= 0)
+                if (response == -1)
                 {
-                    return Ok(response);
+                    return NotFound("Invalid Option");
                 }
-                else
+                else if (response == -2)
                 {
-                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                    return NotFound("Invalid Id");
                 }
+                return NotFound("Unable to process");
             }
-            catch (Exception)
-            {
-                return NotFound();
-            }
+            return Ok(response);
         }
-
     }
 }

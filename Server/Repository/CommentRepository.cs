@@ -1,83 +1,95 @@
-﻿using Server.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Server.Repository
+namespace PostApp.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        public Comment Insert(Comment comment)
+        private readonly PostAppContext context;
+        public CommentRepository(PostAppContext context)
         {
-            try
+            this.context = context;
+        }
+
+        public async Task<Comment> Insert(Comment comment)
+        {
+            if (string.IsNullOrWhiteSpace(comment.CommentDetail) || comment.PostId == null)
             {
-                using (fbContext fb = new fbContext())
+                return comment;
+            }
+            else
+            {
+                if (context.Posts.Any(o => o.PostId == comment.PostId))
                 {
                     comment.CreatedDate = DateTime.Now;
                     comment.UpdatedDate = null;
-
-                    fb.Comments.Add(comment);
-                    fb.SaveChanges();
+                    await context.Comments.AddAsync(comment);
+                    var Po = await context.SaveChangesAsync() > 0;
+                    if (Po)
+                    {
+                        return comment;
+                    }
+                    comment.CommentId = -2;
+                    return comment;
+                }
+                else
+                {
+                    comment.CommentId = -1;
                     return comment;
                 }
             }
-            catch (Exception ex)
+        }
+
+        public async Task<Comment> GetByCommentId(int id)
+        {
+            var Comment = await context.Comments.Where(s => s.CommentId == id).SingleOrDefaultAsync();
+            return Comment;
+        }
+
+        public async Task<List<Comment>> GetByPostId(int id)
+        {
+            var CommentList = await context.Comments.Where(s => s.PostId == id).ToListAsync();
+            if (context.Posts.Any(o => o.PostId == id))
             {
-                throw ex;
+                return CommentList;
+            }
+            else
+            {
+                return CommentList;
             }
         }
 
-        public Comment GetByCommentId(int id)
+        public async Task<Comment> Update(int id, Comment comment)
         {
-            try
+            var Update = await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id);
+            if (Update != null)
             {
-                using (fbContext fb = new fbContext())
+                if (string.IsNullOrWhiteSpace(comment.CommentDetail))
                 {
-
-                    var Comment = fb.Comments.Where(s => s.CommentId == id).First();
-                    return Comment;
+                    return comment;
+                }
+                else
+                {
+                    Update.CommentDetail = comment.CommentDetail;
+                    Update.UpdatedDate = DateTime.Now;
+                    var Po = await context.SaveChangesAsync() > 0;
+                    if (Po)
+                    {
+                        return Update;
+                    }
+                    comment.CommentId = -2;
+                    return comment;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
-            }
-        }
-
-        public List<Comment> GetByPostId(int id)
-        {
-            try
-            {
-                using (fbContext fb = new fbContext())
-                {
-                    var CommentList = fb.Comments.Where(s => s.PostId == id).ToList();
-                    return CommentList;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public Comment Update(int id, Comment comment)
-        {
-            try
-            {
-                using (fbContext fb = new fbContext())
-                {
-                    var update = fb.Comments.First(x => x.CommentId == id);
-
-                    update.CommentDetail = comment.CommentDetail;
-                    update.UpdatedDate = DateTime.Now;
-                    fb.SaveChanges();
-                    return fb.Comments.First(x => x.CommentId == id);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                comment.CommentId = -1;
+                return comment;
             }
         }
     }

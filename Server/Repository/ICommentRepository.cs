@@ -1,17 +1,16 @@
-﻿using Server.Models;
+﻿using PostApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Repository
+namespace PostApp.Repository
 {
-   public interface ICommentRepository
+    public interface ICommentRepository
     {
-        List<Comment> GetByPostId(int id);
-        Comment GetByCommentId(int id);
-
-        Comment Insert(Comment comment);
-        Comment Update(int id, Comment comment);
+        Task<List<Comment>> GetByPostId(int id);
+        Task<Comment> GetByCommentId(int id);
+        Task<Comment> Insert(Comment comment);
+        Task<Comment> Update(int id, Comment comment);
     }
 }

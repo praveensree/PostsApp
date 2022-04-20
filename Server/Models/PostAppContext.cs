@@ -4,29 +4,21 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Server.Models
+namespace PostApp.Models
 {
-    public partial class fbContext : DbContext
+    public partial class PostAppContext : DbContext
     {
-        public fbContext()
+        public PostAppContext()
         {
         }
 
-        public fbContext(DbContextOptions<fbContext> options)
+        public PostAppContext(DbContextOptions<PostAppContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=BHAVNAWKS727;Database=fb;Trusted_Connection=True;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
