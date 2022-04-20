@@ -54,11 +54,14 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
-
             var response = await _commentService.CreateComment(comment);
-            if (response.CommentId == -1)
+            if (response.CommentId < 0)
             {
-                return NotFound("Invalid Id");
+                if (response.CommentId == -1)
+                {
+                    return NotFound("Invalid Id");
+                }
+                return NotFound("unable to process");
             }
             else if (string.IsNullOrWhiteSpace(response.CommentDetail))
             {
@@ -80,9 +83,13 @@ namespace Server.Controllers
             {
                 return BadRequest("Commentdetail Required");
             }
-            else if (response.CommentId == -1)
+            else if (response.CommentId < 0)
             {
-                return NotFound("Invalid Id");
+                if (response.CommentId == -1)
+                {
+                    return NotFound("Invalid Id");
+                }
+                return NotFound("unable to process");
             }
             return Ok(response);
         }

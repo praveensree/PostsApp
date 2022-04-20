@@ -59,6 +59,10 @@ namespace Server.Controllers
             {
                 return BadRequest("PostDescription is required");
             }
+            else if(response.PostId==-1)
+            {
+                return NotFound("PostDescription is required");
+            }
             return Ok(response);
         }
 
@@ -75,7 +79,15 @@ namespace Server.Controllers
             {
                 return BadRequest("PostName Required");
             }
-                return Ok(response);
+            else if(response.PostId==-1)
+            {
+                return NotFound("Invalid Post Id");
+            }
+            else if (response.PostId == -2)
+            {
+                return NotFound("unable to Process");
+            }
+            return Ok(response);
         }
 
         //put api/SocialPost/LikesandHearts/1014/unlike
@@ -83,13 +95,17 @@ namespace Server.Controllers
         public async Task<IActionResult> UpdateSocialPostLikeHeart(int id, string option)
         {
             var response = await _postService.UpdateSocialPostLikeHeart(id, option);
-            if (response == -1)
-            { 
-                return NotFound("Invalid Option");
-            }
-            else if (response == -2)
+            if (response < 0)
             {
-                return NotFound("Invalid Id");
+                if (response == -1)
+                {
+                    return NotFound("Invalid Option");
+                }
+                else if (response == -2)
+                {
+                    return NotFound("Invalid Id");
+                }
+                return NotFound("Unable to process");
             }
             return Ok(response);
         }

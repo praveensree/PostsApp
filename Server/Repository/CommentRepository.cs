@@ -24,13 +24,18 @@ namespace PostApp.Repository
             }
             else
             {
-                if (context.Comments.Any(o => o.PostId == comment.PostId))
+                if (context.Posts.Any(o => o.PostId == comment.PostId))
                 {
                     comment.CreatedDate = DateTime.Now;
                     comment.UpdatedDate = null;
                     await context.Comments.AddAsync(comment);
                     var Po = await context.SaveChangesAsync() > 0;
-                    return Po ? comment : throw new Exception("Unable to process");
+                    if (Po)
+                    {
+                        return comment;
+                    }
+                    comment.CommentId = -2;
+                    return comment;
                 }
                 else
                 {
@@ -73,7 +78,12 @@ namespace PostApp.Repository
                     Update.CommentDetail = comment.CommentDetail;
                     Update.UpdatedDate = DateTime.Now;
                     var Po = await context.SaveChangesAsync() > 0;
-                    return Po ? await context.Comments.FirstOrDefaultAsync(x => x.CommentId == id) : throw new Exception("Unable to process");
+                    if (Po)
+                    {
+                        return Update;
+                    }
+                    comment.CommentId = -2;
+                    return comment;
                 }
             }
             else

@@ -30,7 +30,12 @@ namespace PostApp.Repository
                 post.Hearts = 0;
                 context.Posts.Add(post);
                 var Po = await context.SaveChangesAsync()>0;
-                return Po ? post : throw new Exception("Unable to process the request");
+                if (Po)
+                {
+                    return post;
+                }
+                post.PostId = -1;
+                return post;
             }
         }
 
@@ -49,8 +54,8 @@ namespace PostApp.Repository
         public async Task<Post> Update(int id, Post post)
         {
 
-            var Update = await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
-            if (Update != null)
+            var postData = await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+            if (postData != null)
             {
                 if (string.IsNullOrWhiteSpace(post.PostDescription) || (string.IsNullOrWhiteSpace(post.PostName)))
                 {
@@ -58,16 +63,22 @@ namespace PostApp.Repository
                 }
                 else
                 {
-                    Update.PostName = post.PostName;
-                    Update.PostDescription = post.PostDescription;
-                    Update.UpdatedDate = DateTime.Now;
+                    postData.PostName = post.PostName;
+                    postData.PostDescription = post.PostDescription;
+                    postData.UpdatedDate = DateTime.Now;
                     var Po = await context.SaveChangesAsync() > 0;
-                    return Po? await context.Posts.FirstOrDefaultAsync(x => x.PostId == id): throw new Exception("unable to process");
+                    if (Po)
+                    {
+                        return await context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+                    }
+                    post.PostId = -2;
+                    return post;
                 }
             }
             else
             {
-                throw new ArgumentException(nameof(id));
+                post.PostId = -1;
+                return post;
             }
         }
 
@@ -83,13 +94,21 @@ namespace PostApp.Repository
                     {
                         UpdateLikeorHeart.Likes++;
                         var Po = await context.SaveChangesAsync() > 0;
-                        return Po? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
+                        if (Po)
+                        {
+                            return (int)UpdateLikeorHeart.Likes;
+                        }
+                        return -3;
                     }
                     else
                     {
                         UpdateLikeorHeart.Hearts++;
                         var Po = await context.SaveChangesAsync() > 0;
-                        return Po? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
+                        if (Po)
+                        {
+                            return (int)UpdateLikeorHeart.Hearts;
+                        }
+                        return -3;
                     }
                 }
                 else if (option == "unlike" || option == "disheart")
@@ -100,13 +119,21 @@ namespace PostApp.Repository
                         {
                             UpdateLikeorHeart.Likes--;
                             var Po = await context.SaveChangesAsync() > 0;
-                            return Po ? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
+                            if (Po)
+                            {
+                                return (int)UpdateLikeorHeart.Likes;
+                            }
+                            return -3;
                         }
                         else
                         {
                             UpdateLikeorHeart.Likes = 0;
                             var Po = await context.SaveChangesAsync() > 0;
-                            return Po ? (int)UpdateLikeorHeart.Likes : throw new Exception("unable to process");
+                            if (Po)
+                            {
+                                return (int)UpdateLikeorHeart.Likes;
+                            }
+                            return -3;
                         }
                     }
                     else
@@ -115,13 +142,21 @@ namespace PostApp.Repository
                         {
                             UpdateLikeorHeart.Hearts--;
                             var Po = await context.SaveChangesAsync() > 0;
-                            return Po ? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
+                            if (Po)
+                            {
+                                return (int)UpdateLikeorHeart.Hearts;
+                            }
+                            return -3;
                         }
                         else
                         {
                             UpdateLikeorHeart.Hearts = 0;
                             var Po = await context.SaveChangesAsync() > 0;
-                            return Po ? (int)UpdateLikeorHeart.Hearts : throw new Exception("unable to process");
+                            if (Po)
+                            {
+                                return (int)UpdateLikeorHeart.Hearts;
+                            }
+                            return -3;
                         }
                     }
                 }
